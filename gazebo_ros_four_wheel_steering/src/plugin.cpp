@@ -201,7 +201,8 @@ void GazeboRosFourWheelSteering::Load(gazebo::physics::ModelPtr _model, sdf::Ele
   impl_->joint_scoped_names_.resize(6);
   impl_->joint_pids_.resize(6);
   impl_->joint_controllers_.resize(6);
-
+  
+  //MARK: CHANGE
   std::map<JointIdentifier, std::string> joint_names =
   {{FRONT_RIGHT_MOTOR, "front_right_motor"},
     {FRONT_LEFT_MOTOR, "front_left_motor"},
