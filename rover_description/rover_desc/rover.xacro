@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rover">
+    
+    <!-- Include your existing URDF -->
+    <xacro:include filename="$(find rover_description)/rover_desc/rover.urdf" />
+
+    <!-- Include ros2_control -->
+    <xacro:include filename="$(find rover_gz)/plugins/ros2_control.xacro" />
+
+</robot>

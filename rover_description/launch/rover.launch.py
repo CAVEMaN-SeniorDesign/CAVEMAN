@@ -9,22 +9,21 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     ####### DATA INPUT ##########
-    urdf_file = 'robot.urdf'
-    #xacro_file = "urdfbot.xacro"
     package_description = "rover_description"
 
     ####### DATA INPUT END ##########
     print("Fetching URDF ==>")
-    robot_desc_path = os.path.join(get_package_share_directory(package_description), "rover_desc", urdf_file)
+    #robot_desc_path = os.path.join(get_package_share_directory(package_description), "rover_desc", urdf_file)
+    urdf_file = os.path.join(get_package_share_directory(package_description), 'rover_desc', 'rover.xacro')    #xacro_file = "urdfbot.xacro"
 
     # Robot State Publisher
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        name='robot_state_publisher_node',
+        name='robot_state_publisher',
         emulate_tty=True,
-        parameters=[{'use_sim_time': False, 'robot_description': Command(['xacro ', robot_desc_path])}],
+        parameters=[{'use_sim_time': True, 'robot_description': Command(['xacro ', urdf_file])}],
         output="screen"
     )
 

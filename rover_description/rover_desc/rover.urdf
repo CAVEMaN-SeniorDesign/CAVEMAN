@@ -4,7 +4,7 @@
 <visual>
 <origin xyz="-0.19343228599428496928 0.14395944821783071554 0.26237109907984806911" rpy="-1.5707963267948983344 -3.3355470534782881752e-15 -9.5394697344059988075e-16" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/body.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/body.stl"/>
 </geometry>
 <material name="body_material">
 <color rgba="0.62745098039215685404 0.62745098039215685404 0.62745098039215685404 1.0"/>
@@ -13,7 +13,7 @@
 <collision>
 <origin xyz="-0.19343228599428496928 0.14395944821783071554 0.26237109907984806911" rpy="-1.5707963267948983344 -3.3355470534782881752e-15 -9.5394697344059988075e-16" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/body.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/body.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -28,7 +28,7 @@
 <visual>
 <origin xyz="0.07816000000000011827 0.14200000000000037592 0.01800000000000012701" rpy="-1.570796326794896558 -1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/left_rocker.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/left_rocker.stl"/>
 </geometry>
 <material name="left_rocker_material">
 <color rgba="0.68235294117647060652 0.33333333333333331483 0.73725490196078435901 1.0"/>
@@ -37,7 +37,7 @@
 <collision>
 <origin xyz="0.07816000000000011827 0.14200000000000037592 0.01800000000000012701" rpy="-1.570796326794896558 -1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/left_rocker.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/left_rocker.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -51,7 +51,7 @@
 <visual>
 <origin xyz="-0.034073937586584723825 -0.077213843876329818494 0.043400000000000132916" rpy="-1.570796326794896558 -1.5707963267948954478 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_servo.stl"/>
 </geometry>
 <material name="fl_servo_material">
 <color rgba="0.95294117647058818044 0.79607843137254896693 0.48627450980392156188 1.0"/>
@@ -60,7 +60,7 @@
 <collision>
 <origin xyz="-0.034073937586584723825 -0.077213843876329818494 0.043400000000000132916" rpy="-1.570796326794896558 -1.5707963267948954478 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_servo.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -74,7 +74,7 @@
 <visual>
 <origin xyz="0.056900000000000033884 -0.091013843876329769689 0.06867393758658507652" rpy="-1.570796326794901443 9.7218023302443306324e-16 -5.7863152934901557806e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_steer.stl"/>
 </geometry>
 <material name="fl_steer_material">
 <color rgba="0.97254901960784312376 0.52941176470588235947 0.0039215686274509803377 1.0"/>
@@ -83,7 +83,7 @@
 <collision>
 <origin xyz="0.056900000000000033884 -0.091013843876329769689 0.06867393758658507652" rpy="-1.570796326794901443 9.7218023302443306324e-16 -5.7863152934901557806e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_steer.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -97,7 +97,7 @@
 <visual>
 <origin xyz="-0.028999999999999998002 0.002999999999999974909 -0.11825000000000004952" rpy="1.570796326794896558 5.421257686680294571e-32 -9.7638531054305158568e-33" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_motor.stl"/>
 </geometry>
 <material name="fl_motor_material">
 <color rgba="0.86666666666666669627 0.13333333333333333148 0.13333333333333333148 1.0"/>
@@ -106,7 +106,7 @@
 <collision>
 <origin xyz="-0.028999999999999998002 0.002999999999999974909 -0.11825000000000004952" rpy="1.570796326794896558 5.421257686680294571e-32 -9.7638531054305158568e-33" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_motor.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -120,7 +120,7 @@
 <visual>
 <origin xyz="-0.18104393758658485214 -0.091013843608109823435 0.050899999999998529754" rpy="-1.57079632679489678 -1.570796326794891451 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_whl.stl"/>
 </geometry>
 <material name="fl_whl_material">
 <color rgba="0.18823529411764705621 0.2313725490196078538 0.58823529411764707842 1.0"/>
@@ -129,8 +129,9 @@
 <collision>
 <origin xyz="-0.18104393758658485214 -0.091013843608109823435 0.050899999999998529754" rpy="-1.57079632679489678 -1.570796326794891451 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_whl.stl"/>
 </geometry>
+
 </collision>
 <inertial>
 <origin xyz="-7.9178013523293577987e-17 -9.7144514654701197287e-17 -0.0070773280698739971309" rpy="0 0 0"/>
@@ -145,7 +146,7 @@
 <child link="fl_whl" />
 <axis xyz="0 0 1"/>
 <limit effort="1" velocity="20" />
-<joint_properties friction="0.0"/>
+<joint_properties friction="12.0"/>
 </joint>
 
 <joint name="FL_Motor2Mount" type="fixed">
@@ -161,7 +162,7 @@
 <visual>
 <origin xyz="-0.047600000000000530775 -0.11250057860073051086 0.18179393758658513036" rpy="-1.5707963267949001107 2.2947746081961756375e-15 -5.7863152935050374413e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_clamp.stl"/>
 </geometry>
 <material name="fl_clamp_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -170,7 +171,7 @@
 <collision>
 <origin xyz="-0.047600000000000530775 -0.11250057860073051086 0.18179393758658513036" rpy="-1.5707963267949001107 2.2947746081961756375e-15 -5.7863152935050374413e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fl_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fl_clamp.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -198,6 +199,14 @@
 <joint_properties friction="0.0"/>
 </joint>
 
+<!-- <gazebo reference="FL_Steer2Servo">
+    <provideFeedback>true</provideFeedback>
+    <implicitSpringDamper>true</implicitSpringDamper>
+    <springStiffness>200.0</springStiffness>
+    <springReference>0.0</springReference>
+    <friction>0.75</friction>
+</gazebo> -->
+
 <joint name="FL_Servo2Rocker" type="fixed">
 <origin xyz="0.11223393758658459229 0.21921384387633149893 -0.025399999999999700595" rpy="-7.5158228832025782511e-16 1.4251748903082761431e-15 1.5777218104420229102e-30" />
 <parent link="left_rocker" />
@@ -211,7 +220,7 @@
 <visual>
 <origin xyz="-0.034073937586588359805 0.36121384387633087565 0.043400000000000493738" rpy="-1.570796326794896558 -1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_servo.stl"/>
 </geometry>
 <material name="bl_servo_material">
 <color rgba="0.95294117647058818044 0.79607843137254896693 0.48627450980392156188 1.0"/>
@@ -220,7 +229,7 @@
 <collision>
 <origin xyz="-0.034073937586588359805 0.36121384387633087565 0.043400000000000493738" rpy="-1.570796326794896558 -1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_servo.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -234,7 +243,7 @@
 <visual>
 <origin xyz="0.056900000000000089395 0.3750138438763308546 0.068673937586589073323" rpy="-1.5707963267948947816 1.0259804808888011719e-15 -2.2516610801147431128e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_steer.stl"/>
 </geometry>
 <material name="bl_steer_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -243,7 +252,7 @@
 <collision>
 <origin xyz="0.056900000000000089395 0.3750138438763308546 0.068673937586589073323" rpy="-1.5707963267948947816 1.0259804808888011719e-15 -2.2516610801147431128e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_steer.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -257,7 +266,7 @@
 <visual>
 <origin xyz="-0.028999999999999984124 0.0030000000000000026645 -0.11825000000000003564" rpy="1.570796326794896558 -3.2298776845706547017e-31 -2.3153937587166193837e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_motor.stl"/>
 </geometry>
 <material name="bl_motor_material">
 <color rgba="0.86666666666666669627 0.13333333333333333148 0.13333333333333333148 1.0"/>
@@ -266,7 +275,7 @@
 <collision>
 <origin xyz="-0.028999999999999984124 0.0030000000000000026645 -0.11825000000000003564" rpy="1.570796326794896558 -3.2298776845706547017e-31 -2.3153937587166193837e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_motor.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -280,7 +289,7 @@
 <visual>
 <origin xyz="-0.18104393758658796076 0.37501384414455324334 0.050899999999998446487" rpy="-1.570796326794896558 -1.5707963267948921171 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_whl.stl"/>
 </geometry>
 <material name="bl_whl_material">
 <color rgba="0.18823529411764705621 0.2313725490196078538 0.58823529411764707842 1.0"/>
@@ -289,7 +298,7 @@
 <collision>
 <origin xyz="-0.18104393758658796076 0.37501384414455324334 0.050899999999998446487" rpy="-1.570796326794896558 -1.5707963267948921171 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_whl.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -305,7 +314,7 @@
 <child link="bl_whl" />
 <axis xyz="0 0 1"/>
 <limit effort="1" velocity="20" />
-<joint_properties friction="0.0"/>
+<joint_properties friction="12.0"/>
 </joint>
 
 <joint name="BL_Motor2Mount" type="fixed">
@@ -321,7 +330,7 @@
 <visual>
 <origin xyz="-0.047600000000000003419 0.35352710915193058527 0.18179393758658762836" rpy="-1.5707963267948972241 2.2462499910870153881e-15 -2.0161291737649410925e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_clamp.stl"/>
 </geometry>
 <material name="bl_clamp_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -330,7 +339,7 @@
 <collision>
 <origin xyz="-0.047600000000000003419 0.35352710915193058527 0.18179393758658762836" rpy="-1.5707963267948972241 2.2462499910870153881e-15 -2.0161291737649410925e-19" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/bl_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/bl_clamp.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -357,6 +366,14 @@
 <limit effort="1" velocity="20" lower="-1.0471975511965976313" upper="1.0471975511965976313"/>
 <joint_properties friction="0.0"/>
 </joint>
+
+<!-- <gazebo reference="BL_Steer2Servo">
+    <provideFeedback>true</provideFeedback>
+    <implicitSpringDamper>true</implicitSpringDamper>
+    <springStiffness>200.0</springStiffness>
+    <springReference>0.0</springReference>
+    <friction>0.75</friction>
+</gazebo> -->
 
 <joint name="BL_Servo2Rocker" type="fixed">
 <origin xyz="0.11223393758658836705 -0.21921384387633077728 -0.025400000000000255707" rpy="-2.7483631710412831567e-15 1.3713746424438999486e-15 0" />
@@ -387,7 +404,7 @@
 <visual>
 <origin xyz="0.078160000000000728893 -0.14199999999999982081 0.39800000000000024247" rpy="1.570796326794896558 1.5707963267948945596 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/right_rocker.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/right_rocker.stl"/>
 </geometry>
 <material name="right_rocker_material">
 <color rgba="0.68235294117647060652 0.33333333333333331483 0.73725490196078435901 1.0"/>
@@ -396,7 +413,7 @@
 <collision>
 <origin xyz="0.078160000000000728893 -0.14199999999999982081 0.39800000000000024247" rpy="1.570796326794896558 1.5707963267948945596 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/right_rocker.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/right_rocker.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -410,7 +427,7 @@
 <visual>
 <origin xyz="-0.034073937586587610404 0.077213843876329651961 0.4234000000000001096" rpy="1.570796326794896558 1.5707963267948947816 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_servo.stl"/>
 </geometry>
 <material name="fr_servo_material">
 <color rgba="0.95294117647058818044 0.79607843137254896693 0.48627450980392156188 1.0"/>
@@ -419,7 +436,7 @@
 <collision>
 <origin xyz="-0.034073937586587610404 0.077213843876329651961 0.4234000000000001096" rpy="1.570796326794896558 1.5707963267948947816 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_servo.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -433,7 +450,7 @@
 <visual>
 <origin xyz="-0.43690000000000006608 -0.091013843876329908467 0.068673937586587685544" rpy="-1.5707963267948976682 -1.6286182669569800446e-15 -2.4337315947146275507e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_steer.stl"/>
 </geometry>
 <material name="fr_steer_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -442,7 +459,7 @@
 <collision>
 <origin xyz="-0.43690000000000006608 -0.091013843876329908467 0.068673937586587685544" rpy="-1.5707963267948976682 -1.6286182669569800446e-15 -2.4337315947146275507e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_steer.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -456,7 +473,7 @@
 <visual>
 <origin xyz="-0.045000000000000012212 0.0030000000000000026645 -0.11824999999999996625" rpy="1.570796326794896558 1.0103251656619010782e-31 -1.4652627824245612462e-20" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_motor.stl"/>
 </geometry>
 <material name="fr_motor_material">
 <color rgba="0.86666666666666669627 0.13333333333333333148 0.13333333333333333148 1.0"/>
@@ -465,7 +482,7 @@
 <collision>
 <origin xyz="-0.045000000000000012212 0.0030000000000000026645 -0.11824999999999996625" rpy="1.570796326794896558 1.0103251656619010782e-31 -1.4652627824245612462e-20" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_motor.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -479,7 +496,7 @@
 <visual>
 <origin xyz="-0.18104393758658596236 0.091013844144441857775 0.43089999999992534274" rpy="1.570796326794896558 1.5707963267944513586 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_whl.stl"/>
 </geometry>
 <material name="fr_whl_material">
 <color rgba="0.62745098039215685404 0.62745098039215685404 0.62745098039215685404 1.0"/>
@@ -488,7 +505,7 @@
 <collision>
 <origin xyz="-0.18104393758658596236 0.091013844144441857775 0.43089999999992534274" rpy="1.570796326794896558 1.5707963267944513586 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_whl.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -504,7 +521,7 @@
 <child link="fr_whl" />
 <axis xyz="0 0 1"/>
 <limit effort="1" velocity="20" />
-<joint_properties friction="0.0"/>
+<joint_properties friction="12.0"/>
 </joint>
 
 <joint name="FR_Motor2Mount" type="fixed">
@@ -520,7 +537,7 @@
 <visual>
 <origin xyz="-0.33239999999993363744 -0.11250057913722313896 0.18179393758658574098" rpy="-1.5707963267948976682 -5.5927484865492402719e-15 4.5342763853053979933e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_clamp.stl"/>
 </geometry>
 <material name="fr_clamp_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -529,7 +546,7 @@
 <collision>
 <origin xyz="-0.33239999999993363744 -0.11250057913722313896 0.18179393758658574098" rpy="-1.5707963267948976682 -5.5927484865492402719e-15 4.5342763853053979933e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/fr_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/fr_clamp.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -557,6 +574,14 @@
 <joint_properties friction="0.0"/>
 </joint>
 
+<!-- <gazebo reference="FR_Steer2Servo">
+    <provideFeedback>true</provideFeedback>
+    <implicitSpringDamper>true</implicitSpringDamper>
+    <springStiffness>200.0</springStiffness>
+    <springReference>0.0</springReference>
+    <friction>0.75</friction>
+</gazebo> -->
+
 <joint name="FR_Servo2Rocker" type="fixed">
 <origin xyz="0.11223393758658814501 -0.21921384387633036095 -0.025400000000000616529" rpy="-2.4134538591578045008e-16 -2.0555539217396999166e-17 3.1489024047051702671e-19" />
 <parent link="right_rocker" />
@@ -570,7 +595,7 @@
 <visual>
 <origin xyz="-0.034073937586584585047 -0.36121384387633004298 0.42339999999999999858" rpy="1.570796326794896558 1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_servo.stl"/>
 </geometry>
 <material name="br_servo_material">
 <color rgba="0.95294117647058818044 0.79607843137254896693 0.48627450980392156188 1.0"/>
@@ -579,7 +604,7 @@
 <collision>
 <origin xyz="-0.034073937586584585047 -0.36121384387633004298 0.42339999999999999858" rpy="1.570796326794896558 1.5707963267948950037 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_servo.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_servo.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -593,7 +618,7 @@
 <visual>
 <origin xyz="-0.43689999999998418989 0.37501384387626873762 0.068673937586585853676" rpy="-1.5707963267948921171 -1.574818019091989919e-15 -2.67551987683194984e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_steer.stl"/>
 </geometry>
 <material name="br_steer_material">
 <color rgba="0.97254901960784312376 0.52941176470588235947 0.0039215686274509803377 1.0"/>
@@ -602,7 +627,7 @@
 <collision>
 <origin xyz="-0.43689999999998418989 0.37501384387626873762 0.068673937586585853676" rpy="-1.5707963267948921171 -1.574818019091989919e-15 -2.67551987683194984e-32" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_steer.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_steer.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -616,7 +641,7 @@
 <visual>
 <origin xyz="-0.044999999999999998335 0.0030000000000000026645 -0.11825000000000000788" rpy="1.570796326794896558 -1.8202362472477753605e-31 -8.1542138269875287543e-20" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_motor.stl"/>
 </geometry>
 <material name="br_motor_material">
 <color rgba="0.86666666666666669627 0.13333333333333333148 0.13333333333333333148 1.0"/>
@@ -625,7 +650,7 @@
 <collision>
 <origin xyz="-0.044999999999999998335 0.0030000000000000026645 -0.11825000000000000788" rpy="1.570796326794896558 -1.8202362472477753605e-31 -8.1542138269875287543e-20" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_motor.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_motor.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -639,7 +664,7 @@
 <visual>
 <origin xyz="-0.18104393758658479663 -0.37501384360837108911 0.43089999999995631796" rpy="1.570796326794896558 1.5707963267944542451 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_whl.stl"/>
 </geometry>
 <material name="br_whl_material">
 <color rgba="0.18823529411764705621 0.2313725490196078538 0.58823529411764707842 1.0"/>
@@ -648,7 +673,7 @@
 <collision>
 <origin xyz="-0.18104393758658479663 -0.37501384360837108911 0.43089999999995631796" rpy="1.570796326794896558 1.5707963267944542451 0" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_whl.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_whl.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -664,7 +689,7 @@
 <child link="br_whl" />
 <axis xyz="0 0 1"/>
 <limit effort="1" velocity="20" />
-<joint_properties friction="0.0"/>
+<joint_properties friction="12.0"/>
 </joint>
 
 <joint name="BR_Motor2Mount" type="fixed">
@@ -680,7 +705,7 @@
 <visual>
 <origin xyz="-0.33239999999998193214 0.35352710861543823473 0.18179393758658546343" rpy="-1.5707963267948934494 -1.4953316362921737706e-15 2.3825656186268124474e-33" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_clamp.stl"/>
 </geometry>
 <material name="br_clamp_material">
 <color rgba="1 0.52156862745098042655 0.10196078431372548878 1.0"/>
@@ -689,7 +714,7 @@
 <collision>
 <origin xyz="-0.33239999999998193214 0.35352710861543823473 0.18179393758658546343" rpy="-1.5707963267948934494 -1.4953316362921737706e-15 2.3825656186268124474e-33" />
 <geometry>
-<mesh filename="package://rover_description/rover_desc/br_clamp.stl"/>
+<mesh filename="package://rover_description/rover_desc/parts/br_clamp.stl"/>
 </geometry>
 </collision>
 <inertial>
@@ -717,6 +742,14 @@
 <joint_properties friction="0.0"/>
 </joint>
 
+<!-- <gazebo reference="BR_Steer2Servo">
+    <provideFeedback>true</provideFeedback>
+    <implicitSpringDamper>true</implicitSpringDamper>
+    <springStiffness>200.0</springStiffness>
+    <springReference>0.0</springReference>
+    <friction>0.75</friction>
+</gazebo> -->
+
 <joint name="BR_Servo2Rocker" type="fixed">
 <origin xyz="0.11223393758658470332 0.21921384387633208179 -0.025400000000000005906" rpy="3.1722415169865354398e-16 1.8314944689513809452e-16 3.1489024047051702671e-19" />
 <parent link="right_rocker" />
@@ -743,18 +776,29 @@
     <friction>0.75</friction>
 </gazebo>
 
-<gazebo>
-<plugin
-    name="gazebo_ros_4ws"
-    filename="libgazebo_ros_four_wheel_steering.so">
-    <steering_gear_transmission_ratio>1.6</steering_gear_transmission_ratio>
-    <front_right_motor_pid_gain>400 10 1</front_right_motor_pid_gain>
-    <front_left_motor_pid_gain>400 10 1</front_left_motor_pid_gain>
-    <rear_right_motor_pid_gain>400 10 1</rear_right_motor_pid_gain>
-    <rear_left_motor_pid_gain>400 10 1</rear_left_motor_pid_gain>
-    <front_steering_pid_gain>4000 100 2</front_steering_pid_gain>
-    <rear_steering_pid_gain>4000 100 2</rear_steering_pid_gain>
-</plugin>
+<gazebo reference="fr_whl">
+    <material>Gazebo/Black</material>
+    <mu1 value="0.8"/>
+    <mu2 value="0.8"/>
 </gazebo>
+
+<gazebo reference="fl_whl">
+    <material>Gazebo/Black</material>
+    <mu1 value="0.8"/>
+    <mu2 value="0.8"/>
+</gazebo>
+
+<gazebo reference="br_whl">
+    <material>Gazebo/Black</material>
+    <mu1 value="0.8"/>
+    <mu2 value="0.8"/>
+</gazebo>
+
+<gazebo reference="bl_whl">
+    <material>Gazebo/Black</material>
+    <mu1 value="0.8"/>
+    <mu2 value="0.8"/>
+</gazebo>
+
 
 </robot>

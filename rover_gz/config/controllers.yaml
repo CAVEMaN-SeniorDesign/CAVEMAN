@@ -1,0 +1,41 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Adjust if needed
+    use_sim_time: true
+
+    steering_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    wheel_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    joint_broad:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+steering_controller:
+  ros__parameters:
+    use_sim_time: true
+    joints:
+        - FL_Steer2Servo
+        - FR_Steer2Servo
+        - BL_Steer2Servo
+        - BR_Steer2Servo
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    gains:
+      FL_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
+      FR_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
+      BL_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
+      BR_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
+
+wheel_controller:
+  ros__parameters:
+    use_sim_time: true
+    joints:
+      - fl_wheel
+      - fr_wheel
+      - bl_wheel
+      - br_wheel
+    interface_name: velocity

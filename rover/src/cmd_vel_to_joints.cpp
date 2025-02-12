@@ -1,5 +1,7 @@
 #include "cmd_vel_to_joints.hpp"
 
+// Super basic, no PID control or anything, just instantaneously commands to a position.
+
 CmdVelToJoints::CmdVelToJoints() : Node("cmd_vel_to_joints"), wheel_speed_(0.0), steering_angle_(0.0)
 {
     // Subscriber to listen to /cmd_vel
