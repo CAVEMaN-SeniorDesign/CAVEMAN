@@ -1,4 +1,4 @@
-#include "cmd_vel_to_wheels.hpp"
+#include "joy_to_drive.hpp"
 #include <fstream>
 /*============================================================================================
                             _______               _____        
@@ -16,12 +16,12 @@ ________________________________________________________________________________
 
 
 // Facilitates setting bounds
-double CmdVelToWheels::clamp_value(double value, double min_val, double max_val) {
+double JoyToDrive::clamp_value(double value, double min_val, double max_val) {
     const double t = value < min_val ? min_val : value;
     return t > max_val ? max_val : t;
 }
 
-std::string CmdVelToWheels::gameControllerType(){
+std::string JoyToDrive::gameControllerType(){
     std::ifstream file("/proc/bus/input/devices");
     std::string line;
 
@@ -49,13 +49,13 @@ std::string CmdVelToWheels::gameControllerType(){
     return "powerA"; //powerA has no analog triggers, will be default case
 }
 
-CmdVelToWheels::CmdVelToWheels() : Node("cmd_vel_to_wheels")
+JoyToDrive::JoyToDrive() : Node("joy_to_drive")
 {
     // Declare and get parameters
     this->declare_parameter("wheel_base", 0.5);  // Distance between front and rear wheels
     this->declare_parameter("track_width", 0.4); // Distance between left and right wheels
     this->declare_parameter("max_steering_angle", 0.523599); // Max steering (rad)
-    this->declare_parameter("max_wheel_speed", 50.0); // Max wheel velocity (m/s)
+    this->declare_parameter("max_wheel_speed", 20.0); // Max wheel velocity (m/s)
 
     this->get_parameter("wheel_base", wheel_base_);
     this->get_parameter("track_width", track_width_);
@@ -65,8 +65,8 @@ CmdVelToWheels::CmdVelToWheels() : Node("cmd_vel_to_wheels")
     controller_pub_ = this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
         "/drive_controller/joint_trajectory", 10);
 
-    cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
-        "/cmd_vel_joy", 10, std::bind(&CmdVelToWheels::cmdVelCallback, this, std::placeholders::_1));
+    joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
+        "/joy", 10, std::bind(&JoyToDrive::joyCallback, this, std::placeholders::_1));
 
     //Check if controller is connected: 
     std::string type = this->gameControllerType(); // unused var for now, as it sets private member var
@@ -74,14 +74,26 @@ CmdVelToWheels::CmdVelToWheels() : Node("cmd_vel_to_wheels")
     RCLCPP_INFO(this->get_logger(), "CmdVelToWheels node started!");
 }
 
-void CmdVelToWheels::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg)
+void JoyToDrive::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {
-    double v = msg->linear.x;  // Forward velocity
-    double omega = msg->angular.z; // Angular velocity
-    
+
+    // if(this->game_controller_type_=="xbox"){
+    //     v = -v + 10; // if detected controller is xbox, commanded velocity should be shifted down so 0 at rest, and inverted.
+    // }
+    double v = 0.0;
+    double omega = 0.0;
     if(this->game_controller_type_=="xbox"){
-        v = -v + 10; // if detected controller is xbox, commanded velocity should be shifted down so 0 at rest, and inverted.
+        double v_right = -msg->axes[5] + 10;  // Forward velocity, right trigger of xbox
+        double v_left = -msg->axes[2] + 10;// Back velocity, left trigger of xbox
+        v = (v_right - v_left)*max_wheel_speed_;
+        omega = msg->axes[0]; // Angular velocity on joy 0
     }
+    else{
+        v = (msg->axes[1])*max_wheel_speed_; //powerA axis 1 for drive
+        omega = msg->axes[2]; //powerA Steering with right joy
+
+    }
+
 
     //MARK: VERI. STEER ANGs
     // Ackermann steer calcuations
@@ -137,7 +149,7 @@ void CmdVelToWheels::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr m
 
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<CmdVelToWheels>();
+    auto node = std::make_shared<JoyToDrive>();
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;

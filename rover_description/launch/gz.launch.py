@@ -38,26 +38,52 @@ def generate_launch_description():
                                    '-entity', 'rover'],
                         output='screen')
 
-    steering_ctrl_spawner = Node(
-        package="controller_manager",
-        executable="spawner.py",
-        arguments=["steering_controller"],
+    # drive_command_translator = Node(
+    #     package="rover",
+    #     executable="cmd_vel_to_wheels",
+    #     arguments=[],
+    #     output="screen"
+    # )
+    drive_command_translator = Node(
+        package="rover",
+        executable="joy_to_drive",
+        arguments=[],
         output="screen"
     )
+    
+    launch_teleop_joy = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('rover'), 'launch', 'joy.py')]),
+             )
+    
+    drive_ctrl_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["drive_controller"],
+        output="screen"
+    )
+    
+    # steering_ctrl_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner.py",
+    #     arguments=["steering_controller"],
+    #     output="screen"
+    # )
 
-    wheel_ctrl_spawner = Node(
-        package="controller_manager",
-        executable="spawner.py",
-        arguments=["wheel_controller"],
-        output="screen"
-    )
+    # wheel_ctrl_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner.py",
+    #     arguments=["wheel_controller"],
+    #     output="screen"
+    # )
     # Launch them all!
     return LaunchDescription([
         rover,
         gazebo,
         spawn_entity,
-        steering_ctrl_spawner,
-        wheel_ctrl_spawner
+        launch_teleop_joy,
+        drive_ctrl_spawner,
+        drive_command_translator
     ])
     
     '''

@@ -36,23 +36,21 @@ ament_target_dependencies(listener rclcpp std_msgs)
 add_executable(cmd_vel_to_joints src/cmd_vel_to_joints.cpp)
 ament_target_dependencies(cmd_vel_to_joints rclcpp sensor_msgs geometry_msgs control_toolbox)
 
-add_executable(rover_4wd_translator src/rover_4wd_translator.cpp)
-ament_target_dependencies(rover_4wd_translator rclcpp sensor_msgs geometry_msgs std_msgs four_wheel_steering_msgs)
-
 add_executable(cmd_vel_to_wheels src/cmd_vel_to_wheels.cpp)
 ament_target_dependencies(cmd_vel_to_wheels rclcpp geometry_msgs std_msgs trajectory_msgs)
+
+add_executable(joy_to_drive src/joy_to_drive.cpp)
+ament_target_dependencies(joy_to_drive rclcpp sensor_msgs std_msgs trajectory_msgs)
 
 install(
   TARGETS 
   cmd_vel_to_joints
   cmd_vel_to_wheels
-  rover_4wd_translator
+  joy_to_drive
   talker 
   listener
   DESTINATION lib/${PROJECT_NAME}
 )
-
-
 
 
 if(BUILD_TESTING)

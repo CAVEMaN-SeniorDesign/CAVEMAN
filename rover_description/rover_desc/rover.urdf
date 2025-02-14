@@ -389,6 +389,11 @@
 <parent link="body" />
 <child link="left_rocker" />
 <axis xyz="0 0 1"/>
+<safety_controller soft_lower_limit="-0.4" 
+                     soft_upper_limit="0.4" 
+                     k_position="100.0" 
+                     k_velocity="5.0"/>
+
 <limit effort="1" velocity="20" lower="-0.52359877559829881566" upper="0.52359877559829881566"/>
 <joint_properties friction="0.0"/>
 </joint>
@@ -396,7 +401,7 @@
 <gazebo reference="l_rocker2body">
     <provideFeedback>true</provideFeedback>
     <implicitSpringDamper>true</implicitSpringDamper>
-    <springStiffness>100.0</springStiffness>
+    <springStiffness>300.0</springStiffness>
     <springReference>0.0</springReference>
 </gazebo>
 
@@ -765,39 +770,20 @@
 <child link="right_rocker" />
 <axis xyz="0 0 1"/>
 <limit effort="1" velocity="20" lower="-0.52359877559829881566" upper="0.52359877559829881566"/>
+<safety_controller soft_lower_limit="-0.4" 
+                     soft_upper_limit="0.4" 
+                     k_position="100.0" 
+                     k_velocity="5.0"/>
+
 <joint_properties friction="0.0"/>
 </joint>
 
 <gazebo reference="r_rocker2body">
     <provideFeedback>true</provideFeedback>
     <implicitSpringDamper>true</implicitSpringDamper>
-    <springStiffness>500.0</springStiffness>
+    <springStiffness>300.0</springStiffness>
     <springReference>0.0</springReference>
     <friction>0.75</friction>
-</gazebo>
-
-<gazebo reference="fr_whl">
-    <material>Gazebo/Black</material>
-    <mu1 value="0.8"/>
-    <mu2 value="0.8"/>
-</gazebo>
-
-<gazebo reference="fl_whl">
-    <material>Gazebo/Black</material>
-    <mu1 value="0.8"/>
-    <mu2 value="0.8"/>
-</gazebo>
-
-<gazebo reference="br_whl">
-    <material>Gazebo/Black</material>
-    <mu1 value="0.8"/>
-    <mu2 value="0.8"/>
-</gazebo>
-
-<gazebo reference="bl_whl">
-    <material>Gazebo/Black</material>
-    <mu1 value="0.8"/>
-    <mu2 value="0.8"/>
 </gazebo>
 
 
