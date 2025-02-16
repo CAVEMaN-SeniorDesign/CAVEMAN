@@ -11,6 +11,7 @@ git clone https://github.com/DZZLab/CAVEMAN/tree/main ~/ros2_ws/src
 
 # Note: Main branch is for AMD64 development to allow Gazebo Simulations,
 Jetson branch: https://github.com/CAVEMaN-SeniorDesign/CAVEMAN/tree/Jetson
+
 Jetson only development is done for ARM64 in the following container:
 ```bash
 docker pull 178669/sd_jetson:armJetson
