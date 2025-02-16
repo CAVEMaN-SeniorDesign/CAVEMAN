@@ -7,11 +7,8 @@ from launch_ros.actions import Node
 
 # this is the function launch  system will look for
 def generate_launch_description():
-
-    ####### DATA INPUT ##########
     package_description = "rover_description"
 
-    ####### DATA INPUT END ##########
     print("Fetching URDF ==>")
     #robot_desc_path = os.path.join(get_package_share_directory(package_description), "rover_desc", urdf_file)
     urdf_file = os.path.join(get_package_share_directory(package_description), 'rover_desc', 'rover.xacro')    #xacro_file = "urdfbot.xacro"

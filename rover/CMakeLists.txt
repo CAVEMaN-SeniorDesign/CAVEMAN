@@ -25,7 +25,6 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(control_toolbox REQUIRED)
-find_package(four_wheel_steering_msgs REQUIRED)
 
 add_executable(talker src/sample_publisher.cpp)
 ament_target_dependencies(talker rclcpp std_msgs)
@@ -65,7 +64,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config description launch worlds
+  DIRECTORY config description launch worlds plugins
   DESTINATION share/${PROJECT_NAME}
 )
 
