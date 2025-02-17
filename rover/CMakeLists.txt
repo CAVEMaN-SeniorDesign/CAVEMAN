@@ -64,7 +64,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config description launch worlds plugins
+  DIRECTORY config launch worlds plugins
   DESTINATION share/${PROJECT_NAME}
 )
 
