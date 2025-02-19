@@ -1,0 +1,4 @@
+[submodule "rover_comms/Jetson-Comms"]
+	path = rover_comms/Jetson-Comms
+	url = https://github.com/CAVEMaN-SeniorDesign/Jetson-Comms
+	branch = dev
