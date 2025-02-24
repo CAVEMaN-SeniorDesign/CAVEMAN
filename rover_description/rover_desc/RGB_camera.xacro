@@ -1,0 +1,88 @@
+<robot name="rover">
+
+  <gazebo reference="imager_3">
+    <sensor name="camera" type="depth" >
+      <pose> ${0} ${0} ${0} ${pi/2} ${pi/2} ${0}</pose>
+      <visualize>true</visualize>
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.57</horizontal_fov>
+        <image>
+          <width>1280</width>
+          <height>720</height>
+          <format>B8G8R8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise type="gaussian" mean="0.0" stddev="0.100"/>
+      </camera>
+      <plugin name="depth_camera" filename="libgazebo_ros_camera.so">
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <min_depth>0.1</min_depth>
+        <max_depth>100</max_depth>
+        <frame_name>imager_3</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- <gazebo reference="imager_3">
+    <sensor name="camera" type="depth">
+    <pose> ${0} ${0} ${0} ${pi/2} ${pi/2} ${0}</pose>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>30</update_rate>
+      <camera name="intel_realsense_r200">
+        <horizontal_fov>1.02974</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+
+      <plugin name="camera_driver" filename="libgazebo_ros_camera.so">   
+        <frame_name>imager_3</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo> -->
+
+<!-- <gazebo reference="imager_3">
+  <pose> ${0} ${0} ${0} ${pi/2} ${pi/2} ${0}</pose>
+  <sensor type="camera" name="rgbcam">
+    <update_rate>30</update_rate>
+    <camera>
+      <horizontal_fov>1.57</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>100</far>
+      </clip>
+    </camera>
+    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <camera_name>rgbcam</camera_name>
+      <image_topic_name>/rgbcam/image_raw</image_topic_name>
+      <camera_info_topic_name>/rgbcam/camera_info</camera_info_topic_name>
+      <frame_name>camera_link</frame_name>
+    </plugin>
+  </sensor>
+</gazebo> -->
+
+</robot>

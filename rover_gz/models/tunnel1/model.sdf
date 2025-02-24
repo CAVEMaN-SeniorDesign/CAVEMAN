@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="tunnel_environment">
+    <!-- Make the model static so it doesn't fall -->
+    <static>true</static>
+
+    <link name="tunnel_link">
+      <!-- Visual representation -->
+      <visual name="tunnel_visual">
+        <geometry>
+          <mesh>
+            <uri>>model://tunnel1/meshes/gz_world.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+          <specular>0.2 0.2 0.2 1</specular>
+        </material>
+      </visual>
+
+      <!-- Collision geometry -->
+      <collision name="tunnel_collision">
+        <geometry>
+          <mesh>
+            <uri>model://tunnel1/meshes/gz_world.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

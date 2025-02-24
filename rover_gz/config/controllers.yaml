@@ -30,7 +30,7 @@ drive_controller:
       FR_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
       BL_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
       BR_Steer2Servo: {p: 0.001, d: 5, i: 0.1}
-      fl_wheel: {p: 0.001, d: 5, i: 0.1}
-      fr_wheel: {p: 0.001, d: 5, i: 0.1}
-      bl_wheel: {p: 0.001, d: 5, i: 0.1}
-      br_wheel: {p: 0.001, d: 5, i: 0.1}
+      fl_wheel: {p: 1.0, d: 0.1, i: 0.5}
+      fr_wheel: {p: 1.0, d: 0.1, i: 0.5}
+      bl_wheel: {p: 1.0, d: 0.1, i: 0.5}
+      br_wheel: {p: 1.0, d: 0.1, i: 0.5}

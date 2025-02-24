@@ -115,6 +115,7 @@ void JoyToDrive::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
     double bl_wheel_speed = v - (track_width_ / 2.0) * omega;
     double br_wheel_speed = v + (track_width_ / 2.0) * omega;
 
+    
     fl_wheel_speed = clamp_value(fl_wheel_speed, -max_wheel_speed_, max_wheel_speed_);
     fr_wheel_speed = clamp_value(fr_wheel_speed, -max_wheel_speed_, max_wheel_speed_);
     bl_wheel_speed = clamp_value(bl_wheel_speed, -max_wheel_speed_, max_wheel_speed_);

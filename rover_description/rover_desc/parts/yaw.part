@@ -2,12 +2,12 @@
     "configuration": "default",
     "documentId": "3d141df5b6c1cada8f38db73",
     "documentMicroversion": "0e1df2a442ffeed71739eafb",
-    "elementId": "d10eb89bbd2969a8e6223b5a",
+    "elementId": "21c5b3a9b9c4e3ac6d1a1551",
     "fullConfiguration": "default",
-    "id": "Mx7Od9IaxcpDyIzOE",
+    "id": "MYLE7JGpgactMquEs",
     "isStandardContent": false,
-    "name": "FL_Motor <1>",
-    "partId": "JJD",
+    "name": "yaw <1>",
+    "partId": "JdD",
     "suppressed": false,
     "type": "Part"
 }

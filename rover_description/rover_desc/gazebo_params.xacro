@@ -55,22 +55,54 @@
     <!--Tires & Wheels-->
     <gazebo reference="fr_whl"> 
         <material>Gazebo/Black</material>
-        <mu1 value="10"/>
-        <mu2 value="10"/>
+        <mu1 value="1"/>
+        <mu2 value="1"/>
     </gazebo>
     <gazebo reference="fl_whl">
         <material>Gazebo/Black</material>
-        <mu1 value="10"/>
-        <mu2 value="10"/>
+        <mu1 value="1"/>
+        <mu2 value="1"/>
     </gazebo>
     <gazebo reference="br_whl">
         <material>Gazebo/Black</material>
-        <mu1 value="10"/>
-        <mu2 value="10"/>
+        <mu1 value="1"/>
+        <mu2 value="1"/>
     </gazebo>
     <gazebo reference="bl_whl">
         <material>Gazebo/Black</material>
-        <mu1 value="10"/>
-        <mu2 value="10"/>
+        <mu1 value="1"/>
+        <mu2 value="1"/>
+    </gazebo>
+
+    <gazebo reference="l_rocker2body">
+        <provideFeedback>true</provideFeedback>
+        <implicitSpringDamper>true</implicitSpringDamper>
+        <springStiffness>700.0</springStiffness>
+        <springReference>0.0</springReference>
+    </gazebo>
+
+    <gazebo reference="r_rocker2body">
+        <provideFeedback>true</provideFeedback>
+        <implicitSpringDamper>true</implicitSpringDamper>
+        <springStiffness>700.0</springStiffness>
+        <springReference>0.0</springReference>
+        <friction>0.75</friction>
+    </gazebo>
+
+    <!-- These are temporary just to stop them from flopping around -->
+    <gazebo reference="rs_yaw">
+        <provideFeedback>true</provideFeedback>
+        <implicitSpringDamper>true</implicitSpringDamper>
+        <springStiffness>700.0</springStiffness>
+        <springReference>0.0</springReference>
+        <friction>0.75</friction>
+    </gazebo>
+
+    <gazebo reference="rs_pitch">
+        <provideFeedback>true</provideFeedback>
+        <implicitSpringDamper>true</implicitSpringDamper>
+        <springStiffness>700.0</springStiffness>
+        <springReference>0.0</springReference>
+        <friction>0.75</friction>
     </gazebo>
 </robot>

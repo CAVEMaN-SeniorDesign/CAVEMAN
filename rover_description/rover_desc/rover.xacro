@@ -2,10 +2,23 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rover">
     
     <!-- URDF & Visual -->
-    <xacro:include filename="$(find rover_description)/rover_desc/rover.urdf" />
-    <xacro:include filename="$(find rover_description)/rover_desc/gazebo_colors.xacro" />
+    <xacro:include filename="$(find rover_description)/rover_desc/parts/robot.urdf" />
+    <xacro:include filename="$(find rover_description)/rover_desc/gazebo_params.xacro" />
 
+    <xacro:include filename="$(find rover_description)/rover_desc/realsense.urdf" />
+
+    <xacro:include filename="$(find rover_description)/rover_desc/gz_realsense.xacro"/>
+
+    <xacro:realsense_d435 parent="imager_3">
+        <origin xyz="-0.0325 0 -0.005" rpy="${pi/2} ${pi/2} ${0}"/>
+    </xacro:realsense_d435>
+
+    <!-- <joint name="rs_to_rover" type="fixed">
+        <parent link="rover_base" />
+        <child link="base_link" />
+    </joint> -->
     <!-- Include ros2_control -->
-    <xacro:include filename="$(find rover_gz)/plugins/ros2_control.xacro" />
+    <!-- <xacro:include filename="$(find rover_gz)/plugins/ros2_control.xacro" /> -->
+    <!-- <xacro:include filename="$(find rover_description)/rover_desc/parts/imu.xacro" /> -->
 
 </robot>
