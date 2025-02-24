@@ -16,8 +16,6 @@ def generate_launch_description():
 
 
     # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
-    # !!! MAKE SURE YOU SET THE PACKAGE NAME CORRECTLY !!!
-    #inspection
     world_file_path = os.path.expanduser('~/GazeboWorlds/gazebo_models_worlds_collection/worlds/office_cpr.world')
 
     package_name='rover_description'
@@ -67,13 +65,11 @@ def generate_launch_description():
 
     return LaunchDescription([
         rover, 
-        #TimerAction(period=2.0, actions=[realsense]),
         TimerAction(period=2.0, actions=[gazebo]), 
-        TimerAction(period=3.0, actions=[spawn_entity]),  
-        #TimerAction(period=9.0, actions=[spawn_realsense]), 
-        #TimerAction(period=12.0, actions=[launch_teleop_joy]), 
-        #TimerAction(period=15.0, actions=[drive_ctrl_spawner]),  
-        #TimerAction(period=19.0, actions=[drive_command_translator])
+        TimerAction(period=4.0, actions=[spawn_entity]),  
+        TimerAction(period=6.0, actions=[launch_teleop_joy]), 
+        TimerAction(period=8.0, actions=[drive_ctrl_spawner]),  
+        TimerAction(period=10.0, actions=[drive_command_translator])
     ])
     
     
