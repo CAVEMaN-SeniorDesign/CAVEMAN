@@ -13,9 +13,14 @@ include_directories(include)
 set(CMAKE_PREFIX_PATH "/usr/local/lib")
 set(HEADER_DIR ${CMAKE_PREFIX_PATH}/../include/c++)
 set(COMMON_DIR ${CMAKE_PREFIX_PATH}/../include/common)
-set(PROTOBUF_DIR ${CMAKE_PREFIX_PATH}/../include/c++/include)
 set(JETSON_CAVE_TALK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Jetson-Comms)
 set(CAVETALK_BUILD_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk/build) 
+
+set(PROTO_DIR ${CAVETALK_BUILD_DIR}/CAVeTalk-cpp_protos)
+set(CAVETALK_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk)
+set(CAVEHEADER_DIR ${CAVETALK_DIR}/lib/c++/inc)
+set(CAVECOMMON_DIR ${CAVETALK_DIR}/lib/common/inc)
+
 
 add_subdirectory(${JETSON_CAVE_TALK_DIR})
 
@@ -28,12 +33,19 @@ find_package(rover_interfaces REQUIRED)
 add_executable(rover_comm src/rover_comm.cpp)
 ament_target_dependencies(rover_comm rclcpp sensor_msgs std_msgs rover_interfaces)
 
+set(PROTOBUF_INSTALL_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk/external/protobuf/_build/protobuf-install)
+add_subdirectory(${CAVETALK_DIR}/external/protobuf/third_party/abseil-cpp)
+find_package(Protobuf CONFIG REQUIRED HINTS ${PROTOBUF_INSTALL_DIR})
+
 target_include_directories(rover_comm 
     PUBLIC
-        ${COMMON_DIR}
-        ${HEADER_DIR}
+        ${CAVEHEADER_DIR}
+        ${CAVECOMMON_DIR}
         ${JETSON_CAVE_TALK_DIR}/inc
         ${CAVETALK_BUILD_DIR}
+        ${PROTO_DIR}
+        ${PROTOBUF_INSTALL_DIR}/include
+
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
@@ -44,6 +56,7 @@ target_link_libraries(rover_comm
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-c.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-c_messages.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp_messages.a
+        protobuf::libprotobuf
         jetson_comms
 )
 

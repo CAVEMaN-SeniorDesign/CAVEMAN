@@ -14,9 +14,6 @@
 #include <memory>
 #include <vector>
 
-#include "ooga_booga.pb.h"
-#include "cave_talk_link.h"
-#include "cave_talk_types.h"
 #include "cave_talk.h"
 #include "jetson_cave_talk.h"
 
