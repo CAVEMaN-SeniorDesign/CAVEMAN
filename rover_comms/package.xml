@@ -11,7 +11,11 @@
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+<<<<<<< HEAD
   <depend>rover_interfaces</depend>
+=======
+
+>>>>>>> 9b32c7c9f8b1ba56c04d41cc22d122581b60c4ff
   <export>
     <build_type>ament_cmake</build_type>
   </export>
