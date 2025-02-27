@@ -31,12 +31,12 @@ public:
     std::shared_ptr<cave_talk::Talker> talker;    
     std::shared_ptr<cave_talk::Listener> listener;
     rclcpp::TimerBase::SharedPtr timer_;
-
+    rclcpp::TimerBase::SharedPtr timer2_;
 
 private:
     void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg); 
     void listen_callback();
-
+    void speak_callback();
     std::string gameControllerType();
 
     // sub for /cmd_vel_joy topics and publish to joystick topic

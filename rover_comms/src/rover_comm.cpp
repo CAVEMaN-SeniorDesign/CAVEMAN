@@ -32,16 +32,21 @@ RoverComm::RoverComm() : Node("rover_comm")
     }
     
     RCLCPP_INFO(this->get_logger(), "rover_comms up!");
-
+/*
     while(waiting_booga){
         RCLCPP_INFO(this->get_logger(), "Sent Ooga, awaiting Booga");
         talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
         sleep(1);
     }
-    
+  */  
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(500),
-        std::bind(&RoverComm::listen_callback, this)
+        std::bind(&RoverComm::speak_callback, this)
+    );
+
+    timer2_ = this->create_wall_timer(
+	std::chrono::milliseconds(500),
+	std::bind(&RoverComm::listen_callback, this)
     );
 }
 
@@ -55,7 +60,15 @@ void RoverComm::listen_callback() {
     }
 }
 
-
+void RoverComm::speak_callback(){
+    if(talker){
+        RCLCPP_INFO(this->get_logger(), "Speaking...");
+	(this->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
+    }
+    else{
+	RCLCPP_INFO(this->get_logger(), "Waiting for Speaker to be passed...");
+    }
+}
 void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {   
     double v = 0.0;
