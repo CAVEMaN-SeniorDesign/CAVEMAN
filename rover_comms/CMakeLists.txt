@@ -37,6 +37,8 @@ set(PROTOBUF_INSTALL_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk/external/protobuf/_bui
 add_subdirectory(${CAVETALK_DIR}/external/protobuf/third_party/abseil-cpp)
 find_package(Protobuf CONFIG REQUIRED HINTS ${PROTOBUF_INSTALL_DIR})
 
+# add_library(CAVeTalk-cpp ${CAVETALK_DIR}/)
+
 target_include_directories(rover_comm 
     PUBLIC
         ${CAVEHEADER_DIR}

@@ -1,39 +1,45 @@
 #include "rover_comm.hpp"
-#include <fstream>
-#include <iostream>
 
-// Implementation of the virtual destructor for ListenerCallbacks
-cave_talk::ListenerCallbacks::~ListenerCallbacks() = default;
+static const std::size_t kMaxMessageLength = 255U;
+static RingBuffer<uint8_t, kMaxMessageLength> ring_buffer;
 
-// RoverCommsListener implementation
-RoverCommsListener::RoverCommsListener(rclcpp::Node* node)
+RoverComm::RoverComm() : Node("rover_comm")
+{
+    // Create joy subscription
+    joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
+        "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1));
+
+    // Create serial publisher
+    serial_read_pub_ = this->create_publisher<rover_interfaces::msg::Serial>(
+        "/serial_read/data", 10);
+    
+    // Check for connected game controllers
+    std::string type = this->gameControllerType();
+    
+    CaveTalk_Error_t init_error = cave_talk::init();
+    if (init_error != CAVE_TALK_ERROR_NONE){
+        RCLCPP_INFO(this->get_logger(), "UART init error encountered, exiting.");
+        return;
+    }
+    
+    RCLCPP_INFO(this->get_logger(), "rover_comms up!");
+}
+
+
+void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {   
-    rover_comm_node = node;
-}
-
-void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
-{
-    RCLCPP_INFO(rover_comm_node->get_logger(), "Ooga Booga");
-}
-
-void RoverCommsListener::HearMovement(const CaveTalk_MetersPerSecond_t speed, const CaveTalk_RadiansPerSecond_t turn_rate)
-{
-    RCLCPP_INFO(rover_comm_node->get_logger(), "wagu!?");
-}
-
-void RoverCommsListener::HearCameraMovement(const CaveTalk_Radian_t pan, const CaveTalk_Radian_t tilt)
-{
-    RCLCPP_INFO(rover_comm_node->get_logger(), "ooeoeoe");
-}
-
-void RoverCommsListener::HearLights(const bool headlights)
-{
-    RCLCPP_INFO(rover_comm_node->get_logger(), "ahaha");
-}
-
-void RoverCommsListener::HearMode(const bool manual)
-{
-    RCLCPP_INFO(rover_comm_node->get_logger(), "wokawoka");
+    double v = 0.0;
+    double omega = 0.0;
+    if(this->game_controller_type_=="xbox"){
+        // invert the values
+        double r_trig = -msg->axes[5];
+        double l_trig = -msg->axes[2];
+        omega = msg->axes[0]; // Angular velocity on joy 0
+    }
+    else{
+        double l_joy = msg->axes[1];
+        omega = msg->axes[2]; //powerA Steering with right joy
+    }
 }
 
 // RoverComm implementation
@@ -65,47 +71,86 @@ std::string RoverComm::gameControllerType(){
     return "powerA"; //powerA has no analog triggers, will be default case
 }
 
-RoverComm::RoverComm() : Node("rover_comm")
-{
-    // Create joy subscription
-    joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
-        "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1));
 
-    // Create serial publisher
-    serial_read_pub_ = this->create_publisher<rover_interfaces::msg::Serial>(
-        "/serial_read/data", 10);
+cave_talk::ListenerCallbacks::~ListenerCallbacks() = default;
 
-    // Check for connected game controllers
-    std::string type = this->gameControllerType();
-    
-    RCLCPP_INFO(this->get_logger(), "rover_comms up!");
+// ListenerCallbacks implementation
+RoverCommsListener::RoverCommsListener(std::shared_ptr<RoverComm> node):rover_comm_node_(node) // assigns to rover_comm_node_
+{   
+
 }
 
+void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
+{
+    std::string output  = "Heard ";
 
-void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
-{   
-    if (!port_open) {
-        return;
+    if (ooga_booga==cave_talk::SAY_OOGA){
+        (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_BOOGA);
+        output = output + "OOGA, said BOOGA";
+    }
+    else if (ooga_booga==cave_talk::SAY_BOOGA){
+        // (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
+        output = output + "Heard Booga, loop closed";
     }
 
-    double v = 0.0;
-    double omega = 0.0;
-    if(this->game_controller_type_=="xbox"){
-        // invert the values
-        double r_trig = -msg->axes[5];
-        double l_trig = -msg->axes[2];
-        omega = msg->axes[0]; // Angular velocity on joy 0
-    }
-    else{
-        double l_joy = msg->axes[1];
-        omega = msg->axes[2]; //powerA Steering with right joy
-    }
+    RCLCPP_INFO(rover_comm_node_->get_logger(), output);
+}
+
+void RoverCommsListener::HearMovement(const CaveTalk_MetersPerSecond_t speed, const CaveTalk_RadiansPerSecond_t turn_rate)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "wagu!?");
+}
+
+void RoverCommsListener::HearCameraMovement(const CaveTalk_Radian_t pan, const CaveTalk_Radian_t tilt)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "maka-keega");
+}
+
+void RoverCommsListener::HearLights(const bool headlights)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "unk!");
+}
+
+void RoverCommsListener::HearMode(const bool manual)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "oosha");
+}
+
+void SerialTest(void){
+    CaveTalk_Error_t error = CAVE_TALK_ERROR_NONE;
+
+    error = cave_talk::init();
+
+    size_t bytes_available = 0;
+    size_t bytes_received = 0;
+    char recent_receive;
+
+    while(true){
+
+        error = cave_talk::available(&bytes_available);
+
+         if(bytes_available > 0){
+             //std::cout << bytes_available << std::endl;
+             error = cave_talk::receive(&recent_receive, 1, &bytes_received);
+             std::cout << recent_receive << std::endl;
+         }
+
+     }
+
+    return 0;
 }
 
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<RoverComm>();
-    rclcpp::spin(node);
+    auto rover_node = std::make_shared<RoverComm>();
+    std::shared_ptr<RoverCommsListener> listenCallbacks = std::make_shared<RoverCommsListener>(rover_node);
+    
+    rover_node->talker = std::make_shared<cave_talk::Talker>(cave_talk::send);
+    rover_node->listener = std::make_shared<cave_talk::Listener>(cave_talk::receive, cave_talk::available, listenCallbacks);
+    
+    (rover_node->listener)->Listen();
+    
+    rclcpp::spin(rover_node);
     rclcpp::shutdown();
     return 0;
 }
