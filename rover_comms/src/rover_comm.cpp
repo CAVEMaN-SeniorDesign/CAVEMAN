@@ -3,6 +3,14 @@
 static const std::size_t kMaxMessageLength = 255U;
 static RingBuffer<uint8_t, kMaxMessageLength> ring_buffer;
 
+
+bool waiting_booga = true;
+
+void signalHandler(int signum) {
+    std::cout << "\nInterrupt signal (" << signum << ") received. Exiting..." << std::endl;
+    waiting_booga = false;
+}
+
 RoverComm::RoverComm() : Node("rover_comm")
 {
     // Create joy subscription
@@ -15,14 +23,36 @@ RoverComm::RoverComm() : Node("rover_comm")
     
     // Check for connected game controllers
     std::string type = this->gameControllerType();
-    
+
     CaveTalk_Error_t init_error = cave_talk::init();
+
     if (init_error != CAVE_TALK_ERROR_NONE){
         RCLCPP_INFO(this->get_logger(), "UART init error encountered, exiting.");
         return;
     }
     
     RCLCPP_INFO(this->get_logger(), "rover_comms up!");
+
+    while(waiting_booga){
+        RCLCPP_INFO(this->get_logger(), "Sent Ooga, awaiting Booga");
+        talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
+        sleep(1);
+    }
+    
+    timer_ = this->create_wall_timer(
+        std::chrono::milliseconds(500),
+        std::bind(&RoverComm::listen_callback, this)
+    );
+}
+
+void RoverComm::listen_callback() {
+    if (listener) {
+        RCLCPP_INFO(this->get_logger(), "Listening...");
+        listener->Listen();
+    }
+    else{
+        RCLCPP_INFO(this->get_logger(), "Waiting for listener to be passed...");
+    }
 }
 
 
@@ -90,6 +120,7 @@ void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
     }
     else if (ooga_booga==cave_talk::SAY_BOOGA){
         // (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
+        waiting_booga = false;
         output = output + "Heard Booga, loop closed";
     }
 
@@ -116,7 +147,7 @@ void RoverCommsListener::HearMode(const bool manual)
     RCLCPP_INFO(rover_comm_node_->get_logger(), "oosha");
 }
 
-void SerialTest(void){
+int SerialTest(void){
     CaveTalk_Error_t error = CAVE_TALK_ERROR_NONE;
 
     error = cave_talk::init();
@@ -140,15 +171,19 @@ void SerialTest(void){
     return 0;
 }
 
+
+
 int main(int argc, char **argv) {
+    std::signal(SIGINT, signalHandler);
+
+
     rclcpp::init(argc, argv);
     auto rover_node = std::make_shared<RoverComm>();
     std::shared_ptr<RoverCommsListener> listenCallbacks = std::make_shared<RoverCommsListener>(rover_node);
     
     rover_node->talker = std::make_shared<cave_talk::Talker>(cave_talk::send);
-    rover_node->listener = std::make_shared<cave_talk::Listener>(cave_talk::receive, cave_talk::available, listenCallbacks);
+    rover_node->listener = std::make_shared<cave_talk::Listener>(cave_talk::receive, listenCallbacks);
     
-    (rover_node->listener)->Listen();
     
     rclcpp::spin(rover_node);
     rclcpp::shutdown();

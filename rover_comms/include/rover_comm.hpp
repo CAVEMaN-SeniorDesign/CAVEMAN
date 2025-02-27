@@ -9,6 +9,9 @@
 #include <cmath>
 #include <algorithm>
 
+#include <csignal>
+#include <unistd.h>  // For sleep()
+
 #include <cstddef>
 #include <functional>
 #include <memory>
@@ -27,9 +30,13 @@ public:
     RoverComm();
     std::shared_ptr<cave_talk::Talker> talker;    
     std::shared_ptr<cave_talk::Listener> listener;
+    rclcpp::TimerBase::SharedPtr timer_;
+
 
 private:
-    void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg);
+    void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg); 
+    void listen_callback();
+
     std::string gameControllerType();
 
     // sub for /cmd_vel_joy topics and publish to joystick topic
@@ -55,3 +62,4 @@ private:
 };
 
 #endif // ROVER_COMM_HPP
+
