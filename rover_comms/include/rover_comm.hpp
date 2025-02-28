@@ -18,11 +18,14 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 #include "cave_talk.h"
 #include "jetson_cave_talk.h"
 #include "ring_buffer.h"
 
+#define MAX_LINEAR_VEL 1.0
+#define MAX_ANGULAR_VEL 1.0
 
 class RoverComm : public rclcpp::Node
 {

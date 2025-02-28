@@ -13,6 +13,7 @@ void signalHandler(int signum) {
 
 RoverComm::RoverComm() : Node("rover_comm")
 {
+    game_controller_type_ = "xbox";
     // Create joy subscription
     joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
         "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1));
@@ -32,13 +33,7 @@ RoverComm::RoverComm() : Node("rover_comm")
     }
     
     RCLCPP_INFO(this->get_logger(), "rover_comms up!");
-/*
-    while(waiting_booga){
-        RCLCPP_INFO(this->get_logger(), "Sent Ooga, awaiting Booga");
-        talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
-        sleep(1);
-    }
-  */  
+
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(500),
         std::bind(&RoverComm::speak_callback, this)
@@ -63,25 +58,39 @@ void RoverComm::listen_callback() {
 void RoverComm::speak_callback(){
     if(talker){
         RCLCPP_INFO(this->get_logger(), "Speaking...");
-	(this->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
+	    talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
     }
     else{
-	RCLCPP_INFO(this->get_logger(), "Waiting for Speaker to be passed...");
+	    RCLCPP_INFO(this->get_logger(), "Waiting for Speaker to be passed...");
     }
 }
 void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {   
-    double v = 0.0;
-    double omega = 0.0;
-    if(this->game_controller_type_=="xbox"){
-        // invert the values
-        double r_trig = -msg->axes[5];
-        double l_trig = -msg->axes[2];
-        omega = msg->axes[0]; // Angular velocity on joy 0
+    if(talker){
+        RCLCPP_INFO(this->get_logger(), "Speaking...");
+	    talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
+    
+        double v = 0;
+        double omega = 0;
+        if(this->game_controller_type_=="xbox"){
+            // invert the values
+            double r_trig = -msg->axes[4] + 1; // Default unpressed is 1.0, down to -1 fully pressed
+            double l_trig = -msg->axes[5] + 1; // 
+            omega = msg->axes[0]; // Angular velocity on joy 0
+            //normalize to MAX_LINEAR_VEL
+            v = (r_trig - l_trig) * (MAX_LINEAR_VEL / 2.0);
+        }
+        else{
+            double l_joy = msg->axes[1];
+            omega = msg->axes[2]; //powerA Steering with right joy
+            v = (l_joy);
+        }
+        std::string command_vel_msg = "Linear_Vel: " + std::to_string(v) + ", Angular Vel: " + std::to_string(omega);
+        talker->SpeakMovement(v, omega); 
+        RCLCPP_INFO(this->get_logger(), command_vel_msg);
     }
     else{
-        double l_joy = msg->axes[1];
-        omega = msg->axes[2]; //powerA Steering with right joy
+        RCLCPP_INFO(this->get_logger(), "Joy is awaiting talker pointer to be passed...");
     }
 }
 
@@ -134,6 +143,7 @@ void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
     else if (ooga_booga==cave_talk::SAY_BOOGA){
         // (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
         waiting_booga = false;
+        rover_comm_node_->timer_.reset(); // stops timer callbacks
         output = output + "Heard Booga, loop closed";
     }
 
