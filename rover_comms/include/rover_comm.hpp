@@ -23,9 +23,21 @@
 #include "cave_talk.h"
 #include "jetson_cave_talk.h"
 #include "ring_buffer.h"
+#include <termios.h>
 
 #define MAX_LINEAR_VEL 1.0
 #define MAX_ANGULAR_VEL 1.0
+
+/*Common ports that are assigned on default (we should implement automatic port find and selection):
+    /dev/ttyTHS1 - Jetson Nano built in UART pins on pin 8 (TX) and pin 10 (RX)
+    /dev/ttyUSB0 - This should usually be the default for a FTDI adapter but...
+    /dev/ttyUSB1 - Sometimes it switches to this for some reason.
+*/
+
+//#define PORT "/dev/ttyUSB0"
+//#define BAUD_RATE B1000000
+
+//replaced by variables to allow for dynamic changes
 
 class RoverComm : public rclcpp::Node
 {

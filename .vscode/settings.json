@@ -97,5 +97,6 @@
         "variant": "cpp",
         "bit": "cpp",
         "*.ipp": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/root/ros2_ws/src/control_msgs"
 }

@@ -1,14 +1,16 @@
 #include "rover_comm.hpp"
 
+// defined in Jetson-Comms/inc/jetson_cave_talk.h
+
 static const std::size_t kMaxMessageLength = 255U;
 static RingBuffer<uint8_t, kMaxMessageLength> ring_buffer;
 
-
+bool looping = true;
 bool waiting_booga = true;
 
 void signalHandler(int signum) {
     std::cout << "\nInterrupt signal (" << signum << ") received. Exiting..." << std::endl;
-    waiting_booga = false;
+    looping = false;
 }
 
 RoverComm::RoverComm() : Node("rover_comm")
@@ -27,18 +29,18 @@ RoverComm::RoverComm() : Node("rover_comm")
 
     CaveTalk_Error_t init_error = cave_talk::init();
 
-    if (init_error != CAVE_TALK_ERROR_NONE){
-        RCLCPP_INFO(this->get_logger(), "UART init error encountered, exiting.");
-        return;
+    while ((serial_port < 0) && (init_error != CAVE_TALK_ERROR_NONE) && looping){
+        RCLCPP_INFO(this->get_logger(), "UART init start error, trying again...");
+        init_error = cave_talk::init();
+        sleep(1);
     }
     
-    RCLCPP_INFO(this->get_logger(), "rover_comms up!");
+    RCLCPP_INFO(this->get_logger(), "rover_comms up on port ");
 
     timer_ = this->create_wall_timer(
         std::chrono::milliseconds(500),
         std::bind(&RoverComm::speak_callback, this)
     );
-
     timer2_ = this->create_wall_timer(
 	std::chrono::milliseconds(500),
 	std::bind(&RoverComm::listen_callback, this)
@@ -57,7 +59,7 @@ void RoverComm::listen_callback() {
 
 void RoverComm::speak_callback(){
     if(talker){
-        RCLCPP_INFO(this->get_logger(), "Speaking...");
+        RCLCPP_INFO(this->get_logger(), "Sending Ooga, awaiting Booga...");
 	    talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
     }
     else{
@@ -66,7 +68,7 @@ void RoverComm::speak_callback(){
 }
 void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {   
-    if(talker){
+    if(talker && !(waiting_booga)){
         RCLCPP_INFO(this->get_logger(), "Speaking...");
 	    talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
     
@@ -89,7 +91,7 @@ void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
         talker->SpeakMovement(v, omega); 
         RCLCPP_INFO(this->get_logger(), command_vel_msg);
     }
-    else{
+    else if(!waiting_booga){
         RCLCPP_INFO(this->get_logger(), "Joy is awaiting talker pointer to be passed...");
     }
 }
@@ -198,7 +200,8 @@ int SerialTest(void){
 
 int main(int argc, char **argv) {
     std::signal(SIGINT, signalHandler);
-
+    cave_talk::setTargetPort("/dev/ttyUSB0");
+    cave_talk::setBaud(B1000000);
 
     rclcpp::init(argc, argv);
     auto rover_node = std::make_shared<RoverComm>();
