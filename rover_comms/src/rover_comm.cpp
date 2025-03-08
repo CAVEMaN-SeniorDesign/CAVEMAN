@@ -172,6 +172,21 @@ void RoverCommsListener::HearMode(const bool manual)
     RCLCPP_INFO(rover_comm_node_->get_logger(), "oosha");
 }
 
+void RoverCommsListener::HearConfigServoWheels(const cave_talk::Servo &servo_wheel_0, const cave_talk::Servo &servo_wheel_1, const cave_talk::Servo &servo_wheel_2, const cave_talk::Servo &servo_wheel_3)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config servowheels not impl.");
+}
+
+void RoverCommsListener::HearConfigServoCams(const cave_talk::Servo &servo_cam_pan, const cave_talk::Servo &servo_cam_tilt)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config servocams not impl.");
+}
+
+void RoverCommsListener::HearConfigMotor(const cave_talk::Motor &motor_wheel_0, const cave_talk::Motor &motor_wheel_1, const cave_talk::Motor &motor_wheel_2, const cave_talk::Motor &motor_wheel_3)
+{
+    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config motor not impl.");
+}
+
 int SerialTest(void){
     CaveTalk_Error_t error = CAVE_TALK_ERROR_NONE;
 
@@ -200,8 +215,8 @@ int SerialTest(void){
 
 int main(int argc, char **argv) {
     std::signal(SIGINT, signalHandler);
-    cave_talk::setTargetPort("/dev/ttyUSB0");
-    cave_talk::setBaud(B1000000);
+    // cave_talk::setTargetPort("/dev/ttyUSB0");
+    // cave_talk::setBaud(B1000000);
 
     rclcpp::init(argc, argv);
     auto rover_node = std::make_shared<RoverComm>();

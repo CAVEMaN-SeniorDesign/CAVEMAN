@@ -34,8 +34,8 @@
     /dev/ttyUSB1 - Sometimes it switches to this for some reason.
 */
 
-//#define PORT "/dev/ttyUSB0"
-//#define BAUD_RATE B1000000
+#define PORT "/dev/ttyUSB1"
+#define BAUD_RATE B1000000
 
 //replaced by variables to allow for dynamic changes
 
@@ -71,6 +71,9 @@ public:
     void HearCameraMovement(const CaveTalk_Radian_t pan, const CaveTalk_Radian_t tilt) override;
     void HearLights(const bool headlights) override;
     void HearMode(const bool manual) override;
+    void HearConfigServoWheels(const cave_talk::Servo &servo_wheel_0, const cave_talk::Servo &servo_wheel_1, const cave_talk::Servo &servo_wheel_2, const cave_talk::Servo &servo_wheel_3) override;
+    void HearConfigServoCams(const cave_talk::Servo &servo_cam_pan, const cave_talk::Servo &servo_cam_tilt) override;
+    void HearConfigMotor(const cave_talk::Motor &motor_wheel_0, const cave_talk::Motor &motor_wheel_1, const cave_talk::Motor &motor_wheel_2, const cave_talk::Motor &motor_wheel_3) override;
 
 private:
     std::shared_ptr<RoverComm> rover_comm_node_;
