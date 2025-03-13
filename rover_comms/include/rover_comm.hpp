@@ -43,13 +43,13 @@ class RoverComm : public rclcpp::Node
 {
 public:
     RoverComm();
-    std::shared_ptr<cave_talk::Talker> talker;    
+    std::shared_ptr<cave_talk::Talker> talker;
     std::shared_ptr<cave_talk::Listener> listener;
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::TimerBase::SharedPtr timer2_;
 
 private:
-    void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg); 
+    void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg);
     void listen_callback();
     void speak_callback();
     std::string gameControllerType();
@@ -60,6 +60,8 @@ private:
 
     // Params
     std::string game_controller_type_;
+    double prev_v_;
+    double prev_omega_;
 };
 
 class RoverCommsListener : public cave_talk::ListenerCallbacks
@@ -80,4 +82,3 @@ private:
 };
 
 #endif // ROVER_COMM_HPP
-
