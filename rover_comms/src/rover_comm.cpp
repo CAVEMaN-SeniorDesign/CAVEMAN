@@ -1,28 +1,23 @@
 #include "rover_comm.hpp"
 
-// defined in Jetson-Comms/inc/jetson_cave_talk.h
-
-static const std::size_t kMaxMessageLength = 255U;
-static RingBuffer<uint8_t, kMaxMessageLength> ring_buffer;
-
-bool looping = true;
-bool waiting_booga = true;
-
-void signalHandler(int signum) {
-    std::cout << "\nInterrupt signal (" << signum << ") received. Exiting..." << std::endl;
-    looping = false;
-}
 
 RoverComm::RoverComm() : Node("rover_comm")
 {
     game_controller_type_ = "xbox";
+
+    lights_toggle_ = false;
+    
     // Create joy subscription
     joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
         "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1));
 
-    // Create serial publisher
-    serial_read_pub_ = this->create_publisher<rover_interfaces::msg::Serial>(
-        "/serial_read/data", 10);
+    // // Create serial publisher
+    // serial_read_pub_ = this->create_publisher<rover_interfaces::msg::Serial>(
+    //     "/serial_read/data", 10);
+
+    // Odom publisher
+    odom_read_pub_ = this->create_publisher<rover_interfaces::msg::Odomplot>(
+        "/odom_raw", 10);
 
     // Check for connected game controllers
     std::string type = this->gameControllerType();
@@ -35,21 +30,47 @@ RoverComm::RoverComm() : Node("rover_comm")
         sleep(1);
     }
 
+    first_talk_ = true;
+
     RCLCPP_INFO(this->get_logger(), "rover_comms up on port ");
 
-    timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(500),
+    speak_timer_ = this->create_wall_timer(
+        std::chrono::milliseconds(50),
         std::bind(&RoverComm::speak_callback, this)
     );
-    timer2_ = this->create_wall_timer(
-        std::chrono::milliseconds(500),
+    
+    listen_timer_ = this->create_wall_timer(
+        std::chrono::milliseconds(10),
         std::bind(&RoverComm::listen_callback, this)
     );
+    
 }
+
+RoverComm::~RoverComm(){
+    talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
+    cave_talk::flush(); // flush buffer
+}
+
+std::string RoverComm::CaveTalk_ErrorToString(CaveTalk_Error_t error) {
+    switch (error) {
+        case CAVE_TALK_ERROR_NONE: return "CAVE_TALK_ERROR_NONE";
+        case CAVE_TALK_ERROR_NULL: return "CAVE_TALK_ERROR_NULL";
+        case CAVE_TALK_ERROR_SIZE: return "CAVE_TALK_ERROR_SIZE";
+        case CAVE_TALK_ERROR_SOCKET_CLOSED: return "CAVE_TALK_ERROR_SOCKET_CLOSED";
+        case CAVE_TALK_ERROR_INCOMPLETE: return "CAVE_TALK_ERROR_INCOMPLETE";
+        case CAVE_TALK_ERROR_CRC: return "CAVE_TALK_ERROR_CRC";
+        case CAVE_TALK_ERROR_VERSION: return "CAVE_TALK_ERROR_VERSION";
+        case CAVE_TALK_ERROR_ID: return "CAVE_TALK_ERROR_ID";
+        case CAVE_TALK_ERROR_PARSE: return "CAVE_TALK_ERROR_PARSE";
+        default: return "UNKNOWN_ERROR";
+    }
+}
+
+
 
 void RoverComm::listen_callback() {
     if (listener) {
-        RCLCPP_INFO(this->get_logger(), "Listening...");
+        //RCLCPP_INFO(this->get_logger(), "Listening...");
         listener->Listen();
     }
     else{
@@ -58,31 +79,57 @@ void RoverComm::listen_callback() {
 }
 
 void RoverComm::speak_callback(){
-    if(talker){
+    // if(talker && first_talk_){ // only send once...
+    //     // Reset MCU in attempt to sync
+    //     talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
+    //     CaveTalk_Error_t flush_error = cave_talk::flush();//clearbuffer
+    //     first_talk_ = false;
+
+    //     if(waiting_booga){ //if still waiting for booga, send more oogas
+    //         RCLCPP_INFO(this->get_logger(), "Sending Ooga, awaiting Booga...");
+    //         talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
+    //     }
+        
+    // }
+
+    if(talker && waiting_booga){ //if still waiting for booga, send more oogas
         RCLCPP_INFO(this->get_logger(), "Sending Ooga, awaiting Booga...");
-            talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
+        talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
     }
-    else{
+    else if(!talker){
             RCLCPP_INFO(this->get_logger(), "Waiting for Speaker to be passed...");
     }
 }
+
+
 void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
 {
-    //if(talker && !(waiting_booga)){
-      if(talker){
+    if(first_talk_){
+        // Reset MCU in attempt to sync
+        talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
+        CaveTalk_Error_t flush_error = cave_talk::flush();//clearbuffer
+        first_talk_ = false;
+    }
+
+    if(talker && !(waiting_booga)){
         static bool first_log = true; // static persists between calls
+	    static bool first_log_cams = true;
         RCLCPP_INFO(this->get_logger(), "Speaking...");
-            talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
+        //talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
 
         double v = 0;
         double omega = 0;
+        double cam_pan = 0;
+        double cam_tilt = 0;
+
         if(this->game_controller_type_=="xbox"){
             // invert the values
             double r_trig = -msg->axes[4] + 1; // Default unpressed is 1.0, down to -1 fully pressed
             double l_trig = -msg->axes[5] + 1; //
             omega = msg->axes[0]; // Angular velocity on joy 0
-            //normalize to MAX_LINEAR_VEL
-            v = (r_trig - l_trig) * (MAX_LINEAR_VEL / 2.0);
+            cam_pan = ((msg->axes[2]*-1.0)+1)*3.1415926/2.0;
+            cam_tilt = (msg->axes[3]+1)*3.1415926/2.0;
+            v = (r_trig - l_trig) * (MAX_LINEAR_VEL / 2.0);//normalize to MAX_LINEAR_VEL
         }
         else{
             double l_joy = msg->axes[1];
@@ -90,14 +137,45 @@ void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
             v = (l_joy);
         }
 
+        if(msg->buttons[4]){
+            lights_toggle_ = !lights_toggle_; //toggle
+            //MARK: add error checking
+            CaveTalk_Error_t error_Lights = talker->SpeakLights(lights_toggle_);
+
+            if (error_Lights != CAVE_TALK_ERROR_NONE){
+                std::string error_Lights_str = CaveTalk_ErrorToString(error_Lights);
+                RCLCPP_INFO(this->get_logger(), error_Lights_str);
+            }
+	        RCLCPP_INFO(this->get_logger(), "Lights toggled");
+        }
+
         if (first_log || (v != prev_v_ || omega != prev_omega_)) {
             first_log = false;
+
             std::string command_vel_msg = "Linear_Vel: " + std::to_string(v) + ", Angular Vel: " + std::to_string(omega);
-            talker->SpeakMovement(v, omega);
+            //MARK: add error checking
+            CaveTalk_Error_t error_Movement = talker->SpeakMovement(v, omega);
+            
+            if (error_Movement != CAVE_TALK_ERROR_NONE){
+                std::string error_Movement_str = CaveTalk_ErrorToString(error_Movement);
+                RCLCPP_INFO(this->get_logger(), error_Movement_str);
+            }
             RCLCPP_INFO(this->get_logger(), command_vel_msg);
 
             prev_v_ = v;
             prev_omega_ = omega;
+        }
+
+        if (first_log_cams || (cam_pan != prev_cam_pan_ || cam_tilt != prev_cam_tilt_)) {
+            first_log_cams = false;
+
+            std::string cmd_cam_msg = "Cam_Pan: "  + std::to_string(cam_pan) + ", Cam_Tilt: " + std::to_string(cam_tilt);
+            //MARK: add error checking
+            talker->SpeakCameraMovement(cam_pan, cam_tilt);
+            RCLCPP_INFO(this->get_logger(), cmd_cam_msg);
+
+            prev_cam_pan_ = cam_pan;
+            prev_cam_tilt_ = cam_tilt;
         }
 
         // std::string command_vel_msg = "Linear_Vel: " + std::to_string(v) + ", Angular Vel: " + std::to_string(omega);
@@ -136,110 +214,4 @@ std::string RoverComm::gameControllerType(){
         }
     }
     return "powerA"; //powerA has no analog triggers, will be default case
-}
-
-
-cave_talk::ListenerCallbacks::~ListenerCallbacks() = default;
-
-// ListenerCallbacks implementation
-RoverCommsListener::RoverCommsListener(std::shared_ptr<RoverComm> node):rover_comm_node_(node) // assigns to rover_comm_node_
-{
-
-}
-
-void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
-{
-    std::string output  = "Heard ";
-
-    if (ooga_booga==cave_talk::SAY_OOGA){
-        (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_BOOGA);
-        output = output + "OOGA, said BOOGA";
-    }
-    else if (ooga_booga==cave_talk::SAY_BOOGA){
-        // (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
-        waiting_booga = false;
-        rover_comm_node_->timer_.reset(); // stops timer callbacks
-        output = output + "Heard Booga, loop closed";
-    }
-
-    RCLCPP_INFO(rover_comm_node_->get_logger(), output);
-}
-
-void RoverCommsListener::HearMovement(const CaveTalk_MetersPerSecond_t speed, const CaveTalk_RadiansPerSecond_t turn_rate)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "wagu!?");
-}
-
-void RoverCommsListener::HearCameraMovement(const CaveTalk_Radian_t pan, const CaveTalk_Radian_t tilt)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "maka-keega");
-}
-
-void RoverCommsListener::HearLights(const bool headlights)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "unk!");
-}
-
-void RoverCommsListener::HearMode(const bool manual)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "oosha");
-}
-
-void RoverCommsListener::HearConfigServoWheels(const cave_talk::Servo &servo_wheel_0, const cave_talk::Servo &servo_wheel_1, const cave_talk::Servo &servo_wheel_2, const cave_talk::Servo &servo_wheel_3)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config servowheels not impl.");
-}
-
-void RoverCommsListener::HearConfigServoCams(const cave_talk::Servo &servo_cam_pan, const cave_talk::Servo &servo_cam_tilt)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config servocams not impl.");
-}
-
-void RoverCommsListener::HearConfigMotor(const cave_talk::Motor &motor_wheel_0, const cave_talk::Motor &motor_wheel_1, const cave_talk::Motor &motor_wheel_2, const cave_talk::Motor &motor_wheel_3)
-{
-    RCLCPP_INFO(rover_comm_node_->get_logger(), "Hear config motor not impl.");
-}
-
-int SerialTest(void){
-    CaveTalk_Error_t error = CAVE_TALK_ERROR_NONE;
-
-    error = cave_talk::init();
-
-    size_t bytes_available = 0;
-    size_t bytes_received = 0;
-    char recent_receive;
-
-    while(true){
-
-        error = cave_talk::available(&bytes_available);
-
-         if(bytes_available > 0){
-             //std::cout << bytes_available << std::endl;
-             error = cave_talk::receive(&recent_receive, 1, &bytes_received);
-             std::cout << recent_receive << std::endl;
-         }
-
-     }
-
-    return 0;
-}
-
-
-
-int main(int argc, char **argv) {
-    std::signal(SIGINT, signalHandler);
-    // cave_talk::setTargetPort("/dev/ttyUSB0");
-    // cave_talk::setBaud(B1000000);
-
-    rclcpp::init(argc, argv);
-    auto rover_node = std::make_shared<RoverComm>();
-    std::shared_ptr<RoverCommsListener> listenCallbacks = std::make_shared<RoverCommsListener>(rover_node);
-
-    rover_node->talker = std::make_shared<cave_talk::Talker>(cave_talk::send);
-    rover_node->listener = std::make_shared<cave_talk::Listener>(cave_talk::receive, listenCallbacks);
-
-
-    rclcpp::spin(rover_node);
-    rclcpp::shutdown();
-    return 0;
 }

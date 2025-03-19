@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100
+    update_rate: 5 
     use_sim_time: true
     drive_controller:
       type: joint_trajectory_controller/JointTrajectoryController

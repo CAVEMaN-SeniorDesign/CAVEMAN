@@ -6,6 +6,7 @@
 #include "sensor_msgs/msg/joy.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "rover_interfaces/msg/serial.hpp"
+#include "rover_interfaces/msg/odomplot.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -34,20 +35,20 @@
     /dev/ttyUSB1 - Sometimes it switches to this for some reason.
 */
 
-#define PORT "/dev/ttyUSB1"
-#define BAUD_RATE B1000000
-
-//replaced by variables to allow for dynamic changes
-
 class RoverComm : public rclcpp::Node
 {
 public:
     RoverComm();
+    ~RoverComm();
     std::shared_ptr<cave_talk::Talker> talker;
     std::shared_ptr<cave_talk::Listener> listener;
-    rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::TimerBase::SharedPtr timer2_;
+    rclcpp::TimerBase::SharedPtr speak_timer_;
+    rclcpp::TimerBase::SharedPtr listen_timer_;
+    rclcpp::Publisher<rover_interfaces::msg::Odomplot>::SharedPtr odom_read_pub_; // public to be accessed from callbacks
+    std::string CaveTalk_ErrorToString(CaveTalk_Error_t error); // map to string outputs
 
+    bool looping = true;
+    bool waiting_booga = true;
 private:
     void joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg);
     void listen_callback();
@@ -56,29 +57,17 @@ private:
 
     // sub for /cmd_vel_joy topics and publish to joystick topic
     rclcpp::Publisher<rover_interfaces::msg::Serial>::SharedPtr serial_read_pub_;
+
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_sub_;
 
     // Params
     std::string game_controller_type_;
     double prev_v_;
     double prev_omega_;
-};
-
-class RoverCommsListener : public cave_talk::ListenerCallbacks
-{
-public:
-    RoverCommsListener(std::shared_ptr<RoverComm> node); //possibly need "rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_ptr" instead
-    void HearOogaBooga(const cave_talk::Say ooga_booga) override;
-    void HearMovement(const CaveTalk_MetersPerSecond_t speed, const CaveTalk_RadiansPerSecond_t turn_rate) override;
-    void HearCameraMovement(const CaveTalk_Radian_t pan, const CaveTalk_Radian_t tilt) override;
-    void HearLights(const bool headlights) override;
-    void HearMode(const bool manual) override;
-    void HearConfigServoWheels(const cave_talk::Servo &servo_wheel_0, const cave_talk::Servo &servo_wheel_1, const cave_talk::Servo &servo_wheel_2, const cave_talk::Servo &servo_wheel_3) override;
-    void HearConfigServoCams(const cave_talk::Servo &servo_cam_pan, const cave_talk::Servo &servo_cam_tilt) override;
-    void HearConfigMotor(const cave_talk::Motor &motor_wheel_0, const cave_talk::Motor &motor_wheel_1, const cave_talk::Motor &motor_wheel_2, const cave_talk::Motor &motor_wheel_3) override;
-
-private:
-    std::shared_ptr<RoverComm> rover_comm_node_;
+    double prev_cam_pan_;
+    double prev_cam_tilt_;
+    bool lights_toggle_; 
+    bool first_talk_; // bool to assist syncing with MCU
 };
 
 #endif // ROVER_COMM_HPP

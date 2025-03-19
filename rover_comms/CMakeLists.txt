@@ -30,8 +30,14 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED) 
 find_package(rover_interfaces REQUIRED)
 
-add_executable(rover_comm src/rover_comm.cpp)
-ament_target_dependencies(rover_comm rclcpp sensor_msgs std_msgs rover_interfaces)
+# add_executable(rover_comm src/rover_comm.cpp)
+# ament_target_dependencies(rover_comm rclcpp sensor_msgs std_msgs rover_interfaces)
+
+# add_executable(rover_comms_listener src/rover_comms_listener.cpp)
+# ament_target_dependencies(rover_comms_listener rclcpp sensor_msgs std_msgs rover_interfaces)
+
+add_executable(rover_comms src/main.cpp src/rover_comm.cpp src/rover_comms_listener.cpp)
+ament_target_dependencies(rover_comms rclcpp sensor_msgs std_msgs rover_interfaces)
 
 set(PROTOBUF_INSTALL_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk/external/protobuf/_build/protobuf-install)
 add_subdirectory(${CAVETALK_DIR}/external/protobuf/third_party/abseil-cpp)
@@ -39,7 +45,7 @@ find_package(Protobuf CONFIG REQUIRED HINTS ${PROTOBUF_INSTALL_DIR})
 
 # add_library(CAVeTalk-cpp ${CAVETALK_DIR}/)
 
-target_include_directories(rover_comm 
+target_include_directories(rover_comms 
     PUBLIC
         ${CAVEHEADER_DIR}
         ${CAVECOMMON_DIR}
@@ -52,7 +58,7 @@ target_include_directories(rover_comm
         $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(rover_comm 
+target_link_libraries(rover_comms 
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-common.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-c.a
@@ -64,7 +70,7 @@ target_link_libraries(rover_comm
 
 # Install
 install(
-  TARGETS rover_comm
+  TARGETS rover_comms
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -31,7 +31,7 @@ def generate_launch_description():
 
     UARTcomms = Node(
             package='rover_comms',
-            executable='rover_comm',
+            executable='rover_comms',
             name='comms_node',
             arguments=[],
             output="screen"
