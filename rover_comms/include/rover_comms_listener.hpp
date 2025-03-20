@@ -53,6 +53,8 @@ public:
 
 private:
     std::shared_ptr<RoverComm> rover_comm_node_;
+    std::shared_ptr<cave_talk::Talker> direct_talker_;
+
 };
 
 #endif // ROVER_COMM_LISTENER_HPP

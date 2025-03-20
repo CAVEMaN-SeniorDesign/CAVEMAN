@@ -35,7 +35,7 @@ RoverComm::RoverComm() : Node("rover_comm")
     RCLCPP_INFO(this->get_logger(), "rover_comms up on port ");
 
     speak_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(50),
+        std::chrono::milliseconds(10),
         std::bind(&RoverComm::speak_callback, this)
     );
     
@@ -66,8 +66,6 @@ std::string RoverComm::CaveTalk_ErrorToString(CaveTalk_Error_t error) {
     }
 }
 
-
-
 void RoverComm::listen_callback() {
     if (listener) {
         //RCLCPP_INFO(this->get_logger(), "Listening...");
@@ -79,19 +77,6 @@ void RoverComm::listen_callback() {
 }
 
 void RoverComm::speak_callback(){
-    // if(talker && first_talk_){ // only send once...
-    //     // Reset MCU in attempt to sync
-    //     talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
-    //     CaveTalk_Error_t flush_error = cave_talk::flush();//clearbuffer
-    //     first_talk_ = false;
-
-    //     if(waiting_booga){ //if still waiting for booga, send more oogas
-    //         RCLCPP_INFO(this->get_logger(), "Sending Ooga, awaiting Booga...");
-    //         talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
-    //     }
-        
-    // }
-
     if(talker && waiting_booga){ //if still waiting for booga, send more oogas
         RCLCPP_INFO(this->get_logger(), "Sending Ooga, awaiting Booga...");
         talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
@@ -107,7 +92,6 @@ void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
     if(first_talk_){
         // Reset MCU in attempt to sync
         talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
-        CaveTalk_Error_t flush_error = cave_talk::flush();//clearbuffer
         first_talk_ = false;
     }
 
