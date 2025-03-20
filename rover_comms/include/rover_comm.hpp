@@ -54,6 +54,7 @@ private:
     void listen_callback();
     void speak_callback();
     std::string gameControllerType();
+    bool openAndSendConfig(std::string file);
 
     // sub for /cmd_vel_joy topics and publish to joystick topic
     rclcpp::Publisher<rover_interfaces::msg::Serial>::SharedPtr serial_read_pub_;

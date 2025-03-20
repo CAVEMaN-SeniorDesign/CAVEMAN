@@ -1,10 +1,7 @@
 #include "rover_comms_listener.hpp"
 
 
-
-
 std::shared_ptr<RoverComm> global_rover_node = nullptr; // making global so that sigHandler can access
-
 
 void signalHandler(int signum){
     std::cout << "\nInterrupt signal (" << signum << ") received. Exiting..." << std::endl;
