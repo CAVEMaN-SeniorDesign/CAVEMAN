@@ -73,7 +73,7 @@ void RoverCommsListener::HearLights(const bool headlights)
     RCLCPP_INFO(rover_comm_node_->get_logger(), "unk!");
 }
 
-/*
+
 void RoverCommsListener::HearMode(const bool manual)
 {
     if (rover_comm_node_){
@@ -83,7 +83,7 @@ void RoverCommsListener::HearMode(const bool manual)
         std::cout<<"wagu!?"<<std::endl;
     }
 }
-*/
+
 void RoverCommsListener::HearConfigServoWheels(const cave_talk::Servo &servo_wheel_0, const cave_talk::Servo &servo_wheel_1, const cave_talk::Servo &servo_wheel_2, const cave_talk::Servo &servo_wheel_3)
 {
     if (rover_comm_node_){
@@ -156,5 +156,5 @@ void RoverCommsListener::HearLog(const char *const log)
         std::cout<<"Heard log: "<<log<<std::endl;
     }
 }
-void RoverCommsListener::HearConfigEncoder(const cave_talk::ConfigEncoder &encoder_wheel_0, const cave_talk::ConfigEncoder &encoder_wheel_1, const cave_talk::ConfigEncoder &encoder_wheel_2, const cave_talk::ConfigEncoder &encoder_wheel_3) {}
-void RoverCommsListener::HearArm(const bool arm){}
+//void RoverCommsListener::HearConfigEncoder(const cave_talk::ConfigEncoder &encoder_wheel_0, const cave_talk::ConfigEncoder &encoder_wheel_1, const cave_talk::ConfigEncoder &encoder_wheel_2, const cave_talk::ConfigEncoder &encoder_wheel_3) {}
+//void RoverCommsListener::HearArm(const bool arm){}
