@@ -20,7 +20,7 @@ set(PROTO_DIR ${CAVETALK_BUILD_DIR}/CAVeTalk-cpp_protos)
 set(CAVETALK_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk)
 set(CAVEHEADER_DIR ${CAVETALK_DIR}/lib/c++/inc)
 set(CAVECOMMON_DIR ${CAVETALK_DIR}/lib/common/inc)
-
+set(CATCH_DIR /usr/local/include)
 
 add_subdirectory(${JETSON_CAVE_TALK_DIR})
 
@@ -29,7 +29,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)  
 find_package(sensor_msgs REQUIRED) 
 find_package(rover_interfaces REQUIRED)
-find_package(Catch2 REQUIRED)
+find_package(Catch2 3 REQUIRED)
 # add_executable(rover_comm src/rover_comm.cpp)
 # ament_target_dependencies(rover_comm rclcpp sensor_msgs std_msgs rover_interfaces)
 
@@ -69,7 +69,6 @@ target_link_libraries(rover_comms
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp_messages.a
         protobuf::libprotobuf
         jetson_comms
-        Catch2::Catch2
 )
 
 target_include_directories(test_comms 
@@ -80,7 +79,7 @@ target_include_directories(test_comms
         ${CAVETALK_BUILD_DIR}
         ${PROTO_DIR}
         ${PROTOBUF_INSTALL_DIR}/include
-
+        ${CATCH_DIR}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
@@ -93,7 +92,7 @@ target_link_libraries(test_comms
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp_messages.a
         protobuf::libprotobuf
         jetson_comms
-        Catch2::Catch2
+        Catch2::Catch2WithMain
 )
 
 # Install

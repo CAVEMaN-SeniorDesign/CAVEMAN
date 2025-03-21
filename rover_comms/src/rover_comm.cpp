@@ -4,12 +4,11 @@
 RoverComm::RoverComm() : Node("rover_comm")
 {
     game_controller_type_ = "xbox";
-
     lights_toggle_ = false;
     
     // Create joy subscription
     joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
-        "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1));
+        "/joy", 10, std::bind(&RoverComm::joyCallback, this, std::placeholders::_1)); // "10" is queue-size for messages, how many to queue before dropping
 
     // // Create serial publisher
     // serial_read_pub_ = this->create_publisher<rover_interfaces::msg::Serial>(
