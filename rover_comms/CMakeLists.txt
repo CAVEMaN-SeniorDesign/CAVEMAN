@@ -36,7 +36,7 @@ find_package(rover_interfaces REQUIRED)
 # add_executable(rover_comms_listener src/rover_comms_listener.cpp)
 # ament_target_dependencies(rover_comms_listener rclcpp sensor_msgs std_msgs rover_interfaces)
 
-add_executable(rover_comms src/main.cpp src/rover_comm.cpp src/rover_comms_listener.cpp)
+add_executable(rover_comms src/main.cpp src/rover_comm.cpp src/rover_comms_listener.cpp src/tinyxml2.cpp)
 ament_target_dependencies(rover_comms rclcpp sensor_msgs std_msgs rover_interfaces)
 
 set(PROTOBUF_INSTALL_DIR ${JETSON_CAVE_TALK_DIR}/CAVeTalk/external/protobuf/_build/protobuf-install)
@@ -58,10 +58,10 @@ target_include_directories(rover_comms
         $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(rover_comms 
+target_link_libraries(rover_comms
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-common.a
-        ${CAVETALK_BUILD_DIR}/libCAVeTalk-c.a
+        # ${CAVETALK_BUILD_DIR}/libCAVeTalk-c.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-c_messages.a
         ${CAVETALK_BUILD_DIR}/libCAVeTalk-cpp_messages.a
         protobuf::libprotobuf

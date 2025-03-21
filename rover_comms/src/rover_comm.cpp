@@ -36,7 +36,7 @@ RoverComm::RoverComm() : Node("rover_comm")
     RCLCPP_INFO(this->get_logger(), "rover_comms up on port ");
 
     speak_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(50),
+        std::chrono::milliseconds(500),
         std::bind(&RoverComm::speak_callback, this)
     );
     
@@ -109,6 +109,11 @@ void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
         // Reset MCU in attempt to sync
         talker->SpeakOogaBooga(cave_talk::SAY_BOOGA); // close loop by sending BOOGA
         bool success = openAndSendConfig("/root/ros2_ws/src/rover_comms/src/CaveTalk_Config.xml");
+        if(success){
+            RCLCPP_INFO(this->get_logger(), "Open & Send Config Status: True");
+        }else{
+            RCLCPP_INFO(this->get_logger(), "Open & Send Config Status: False");
+        }
         CaveTalk_Error_t flush_error = cave_talk::flush();//clearbuffer
         first_talk_ = false;
     }
@@ -116,7 +121,7 @@ void RoverComm::joyCallback(const sensor_msgs::msg::Joy::SharedPtr msg)
     if(talker && !(waiting_booga)){
         static bool first_log = true; // static persists between calls
 	    static bool first_log_cams = true;
-        RCLCPP_INFO(this->get_logger(), "Speaking...");
+        // RCLCPP_INFO(this->get_logger(), "Speaking...");
         //talker->SpeakOogaBooga(cave_talk::SAY_OOGA);
 
         double v = 0;

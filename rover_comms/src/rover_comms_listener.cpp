@@ -1,6 +1,6 @@
 #include "rover_comms_listener.hpp"
 
-cave_talk::ListenerCallbacks::~ListenerCallbacks() = default;
+// cave_talk::ListenerCallbacks::~ListenerCallbacks() = default;
 
 
 // ListenerCallbacks implementation
@@ -25,9 +25,10 @@ void RoverCommsListener::HearOogaBooga(const cave_talk::Say ooga_booga)
     else if (ooga_booga==cave_talk::SAY_BOOGA){
         // (rover_comm_node_->talker)->SpeakOogaBooga(cave_talk::SAY_OOGA);
         rover_comm_node_->waiting_booga = false;
-        if(rover_comm_node_->speak_timer_){
-            rover_comm_node_->speak_timer_->cancel(); // stops timer callbacks
-        }
+        // if(rover_comm_node_->speak_timer_){
+        //     rover_comm_node_->speak_timer_->cancel(); // stops timer callbacks
+        // }
+        rover_comm_node_->speak_timer_.reset(); // stops timer callbacks
         output = output + "Heard Booga, loop closed";
     }
 
@@ -49,7 +50,9 @@ void RoverCommsListener::HearLights(const bool headlights)
     RCLCPP_INFO(rover_comm_node_->get_logger(), "unk!");
 }
 
-void RoverCommsListener::HearMode(const bool manual)
+void RoverCommsListener::HearConfigEncoder(const cave_talk::ConfigEncoder &encoder_wheel_0, const cave_talk::ConfigEncoder &encoder_wheel_1, const cave_talk::ConfigEncoder &encoder_wheel_2, const cave_talk::ConfigEncoder &encoder_wheel_3){}
+
+void RoverCommsListener::HearArm(const bool arm)
 {
     RCLCPP_INFO(rover_comm_node_->get_logger(), "oosha");
 }
