@@ -2,3 +2,7 @@
 	path = rover_comms
 	url = https://github.com/CAVEMaN-SeniorDesign/rover_comms
 	branch = new_serial
+[submodule "rover_description"]
+	path = rover_description
+	url = https://github.com/CAVEMaN-SeniorDesign/rover_description
+	branch = main
