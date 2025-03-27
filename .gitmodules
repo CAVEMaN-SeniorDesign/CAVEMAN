@@ -1,0 +1,4 @@
+[submodule "rover_comms"]
+	path = rover_comms
+	url = https://github.com/CAVEMaN-SeniorDesign/rover_comms
+	branch = new_serial
