@@ -5,4 +5,4 @@
 [submodule "rover_description"]
 	path = rover_description
 	url = git@github.com:CAVEMaN-SeniorDesign/rover_description.git
-	branch = main
+	branch = agx_dev
