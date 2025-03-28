@@ -1,8 +1,8 @@
 [submodule "rover_comms"]
 	path = rover_comms
-	url = https://github.com/CAVEMaN-SeniorDesign/rover_comms
+	url = git@github.com:CAVEMaN-SeniorDesign/rover_comms.git
 	branch = agx_dev
 [submodule "rover_description"]
 	path = rover_description
-	url = https://github.com/CAVEMaN-SeniorDesign/rover_description
+	url = git@github.com:CAVEMaN-SeniorDesign/rover_description.git
 	branch = main
