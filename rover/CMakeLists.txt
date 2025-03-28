@@ -24,7 +24,6 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(control_toolbox REQUIRED)
 
 add_executable(talker src/sample_publisher.cpp)
 ament_target_dependencies(talker rclcpp std_msgs)
@@ -32,20 +31,8 @@ ament_target_dependencies(talker rclcpp std_msgs)
 add_executable(listener src/sample_subscriber.cpp)
 ament_target_dependencies(listener rclcpp std_msgs)
 
-add_executable(cmd_vel_to_joints src/cmd_vel_to_joints.cpp)
-ament_target_dependencies(cmd_vel_to_joints rclcpp sensor_msgs geometry_msgs control_toolbox)
-
-add_executable(cmd_vel_to_wheels src/cmd_vel_to_wheels.cpp)
-ament_target_dependencies(cmd_vel_to_wheels rclcpp geometry_msgs std_msgs trajectory_msgs)
-
-add_executable(joy_to_drive src/joy_to_drive.cpp)
-ament_target_dependencies(joy_to_drive rclcpp sensor_msgs std_msgs trajectory_msgs)
-
 install(
   TARGETS 
-  cmd_vel_to_joints
-  cmd_vel_to_wheels
-  joy_to_drive
   talker 
   listener
   DESTINATION lib/${PROJECT_NAME}
@@ -64,7 +51,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config launch worlds plugins
+  DIRECTORY config launch
   DESTINATION share/${PROJECT_NAME}
 )
 
