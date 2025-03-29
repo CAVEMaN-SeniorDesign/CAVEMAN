@@ -6,3 +6,7 @@
 	path = rover_description
 	url = git@github.com:CAVEMaN-SeniorDesign/rover_description.git
 	branch = agx_dev
+[submodule "joint_state_publisher"]
+	path = joint_state_publisher
+	url = https://github.com/ros/joint_state_publisher
+	branch = ros2
