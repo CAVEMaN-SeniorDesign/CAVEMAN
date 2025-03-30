@@ -10,3 +10,18 @@
 	path = joint_state_publisher
 	url = https://github.com/ros/joint_state_publisher
 	branch = ros2
+[submodule "diagnostics"]
+	path = diagnostics
+	url = git@github.com:ros/diagnostics.git
+	branch = ros2-humble
+[submodule "rtabmap_ros"]
+	path = rtabmap_ros
+	url = https://github.com/introlab/rtabmap_ros
+	branch = ros2
+[submodule "rtabmap"]
+	path = rtabmap
+	url = https://github.com/introlab/rtabmap.git
+[submodule "perception_pcl"]
+	path = perception_pcl
+	url = https://github.com/ros-perception/perception_pcl
+	branch = humble
