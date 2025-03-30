@@ -25,3 +25,7 @@
 	path = perception_pcl
 	url = https://github.com/ros-perception/perception_pcl
 	branch = humble
+[submodule "realsense-ros"]
+	path = realsense-ros
+	url = https://github.com/IntelRealSense/realsense-ros
+	branch = ros2-master
