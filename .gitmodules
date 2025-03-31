@@ -29,3 +29,11 @@
 	path = realsense-ros
 	url = https://github.com/IntelRealSense/realsense-ros
 	branch = ros2-master
+[submodule "robot_localization"]
+	path = robot_localization
+	url = git@github.com:cra-ros-pkg/robot_localization.git
+	branch = humble-devel
+[submodule "geographic_info"]
+	path = geographic_info
+	url = git@github.com:ros-geographic-info/geographic_info.git
+	branch = ros2
