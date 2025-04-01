@@ -37,3 +37,7 @@
 	path = geographic_info
 	url = git@github.com:ros-geographic-info/geographic_info.git
 	branch = ros2
+[submodule "navigation2"]
+	path = navigation2
+	url = git@github.com:ros-navigation/navigation2.git
+	branch = humble_main
