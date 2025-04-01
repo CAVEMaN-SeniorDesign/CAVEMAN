@@ -49,3 +49,7 @@
 	path = ros2_realsense
 	url = git@github.com:CAVEMaN-SeniorDesign/ros2_realsense.git
 	branch = main
+[submodule "bond_core"]
+	branch = ros2
+	path = bond_core
+	url = git@github.com:ros/bond_core.git
