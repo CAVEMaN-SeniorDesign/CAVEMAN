@@ -41,3 +41,11 @@
 	path = navigation2
 	url = git@github.com:ros-navigation/navigation2.git
 	branch = humble_main
+[submodule "common_interfaces"]
+	path = common_interfaces
+	url = git@github.com:ros2/common_interfaces.git
+	branch = humble
+[submodule "ros2_realsense"]
+	path = ros2_realsense
+	url = git@github.com:CAVEMaN-SeniorDesign/ros2_realsense.git
+	branch = main
