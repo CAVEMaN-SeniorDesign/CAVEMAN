@@ -37,10 +37,6 @@
 	path = automation/geographic_info
 	url = git@github.com:ros-geographic-info/geographic_info.git
 	branch = ros2
-[submodule "navigation2"]
-	path = automation/navigation2
-	url = git@github.com:ros-navigation/navigation2.git
-	branch = main
 [submodule "common_interfaces"]
 	path = automation/common_interfaces
 	url = git@github.com:ros2/common_interfaces.git
