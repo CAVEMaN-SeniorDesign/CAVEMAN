@@ -19,11 +19,20 @@ def generate_launch_description():
             arguments=['--ros-args', '--log-level', 'info']
          )
 
+    UARTcomms = Node(
+            package='rover_comms',
+            executable='rover_comms',
+            name='comms_node',
+            arguments=[],
+            output="screen"
+    )
+    
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
             description='Use sim time if true'),
+        
         joy_node,
-        # twist_stamper       
+        UARTcomms,
     ])
