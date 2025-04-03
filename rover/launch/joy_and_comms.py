@@ -18,17 +18,7 @@ def generate_launch_description():
             output="screen",
             arguments=['--ros-args', '--log-level', 'info']
          )
-
-    teleop_node = Node(
-            package='teleop_twist_joy',
-            executable='teleop_node',
-            name='teleop_node',
-            parameters=[joy_params, {'use_sim_time': use_sim_time}],
-            remappings=[('/cmd_vel','/cmd_vel_joy')],
-            output="screen",
-            arguments=['--ros-args', '--log-level', 'info']
-         )
-
+    
     UARTcomms = Node(
             package='rover_comms',
             executable='rover_comms',
@@ -44,6 +34,5 @@ def generate_launch_description():
             description='Use sim time if true'),
         
         joy_node,
-        teleop_node,
         UARTcomms,
     ])

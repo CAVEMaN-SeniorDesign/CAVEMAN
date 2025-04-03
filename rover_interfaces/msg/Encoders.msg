@@ -9,10 +9,3 @@ float64 rate_rads_per_sec_encoder_wheel_2
 
 int64 total_pulses_encoder_wheel_3
 float64 rate_rads_per_sec_encoder_wheel_3
-
-float64 x_accel_mpss
-float64 y_accel_mpss
-float64 z_accel_mpss
-float64 roll_rads_per_sec
-float64 pitch_rads_per_sec
-float64 yaw_rads_per_sec
