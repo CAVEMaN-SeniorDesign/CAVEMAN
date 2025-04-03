@@ -1,22 +1,14 @@
-amcl:
-  ros__parameters:
-    use_sim_time: false
-
 bt_navigator:
   ros__parameters:
     use_sim_time: false
 
+# Responsible for outputtign to /cmd_vel like topic of (geometry_msgs/Twist) msg type
 controller_server:
   ros__parameters:
     use_sim_time: false
 
 planner_server:
   ros__parameters:
-    use_sim_time: false
-
-map_server:
-  ros__parameters:
-    yaml_filename: "/abs_path_to_map.yaml"
     use_sim_time: false
 
 behavior_server:
@@ -30,3 +22,14 @@ local_costmap:
 global_costmap:
   ros__parameters:
     use_sim_time: false
+
+# This is if we have a pre-made map we can use :)
+# map_server:
+#   ros__parameters:
+#     yaml_filename: "/abs_path_to_map.yaml"
+#     use_sim_time: false
+
+# "Adaptive Monte Carlo Localization" is also dependent on a pre-made known map
+# amcl:
+#   ros__parameters:
+#     use_sim_time: false
