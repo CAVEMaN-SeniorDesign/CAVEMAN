@@ -110,7 +110,7 @@ local_costmap:
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: odom
-      robot_base_frame: base_link
+      robot_base_frame: rover_base # can use baselink too, I just have a bunch of dummy links to origin for robustness
       use_sim_time: False
       rolling_window: true
       width: 3

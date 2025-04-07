@@ -12,6 +12,26 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    realsense_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                FindPackageShare("realsense2_camera").find("realsense2_camera"),
+                "launch",
+                "rs_launch.py"
+            )
+        ),
+        launch_arguments={
+            'color_width': '1280',
+            'color_height': '720',
+            'color_fps': '30.0',
+            'depth_width': '640',
+            'depth_height': '480',
+            'depth_fps': '30.0',
+            'enable_sync': 'true',
+            'align_depth': 'true',
+        }.items()
+    )
+    
     parameters=[{
           'frame_id':'camera_link',
           'subscribe_depth':True,
@@ -25,8 +45,8 @@ def generate_launch_description():
           ('depth/image', '/camera/camera/realigned_depth_to_color/image_raw')]
 
     return LaunchDescription([
-
-        # Nodes to launch       
+        realsense_launch,
+        
         Node(
             package='rtabmap_odom', executable='rgbd_odometry', output='screen',
             parameters=parameters,
@@ -77,6 +97,7 @@ ros2 launch realsense2_camera rs_launch.py
     enable_sync:=true \
     align_depth:=true 
     
+# current best working
 ros2 launch realsense2_camera rs_launch.py \
   color_width:=1280 color_height:=720 color_fps:=30.0 \
   depth_width:=640 depth_height:=480 depth_fps:=30.0 \
