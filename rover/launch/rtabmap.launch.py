@@ -7,15 +7,18 @@
 #   $ ros2 launch rtabmap_examples realsense_d435_color.launch.py
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable, IncludeLaunchDescription, TimerAction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+import os
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     realsense_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                FindPackageShare("realsense2_camera").find("realsense2_camera"),
+                get_package_share_directory('realsense2_camera'),
                 "launch",
                 "rs_launch.py"
             )
@@ -103,6 +106,11 @@ ros2 launch realsense2_camera rs_launch.py \
   depth_width:=640 depth_height:=480 depth_fps:=30.0 \
   enable_sync:=true align_depth:=true
 
+# current best working
+ros2 launch realsense2_camera rs_launch.py \
+  color_width:=1280 color_height:=720 color_fps:=30.0 \
+  depth_width:=1280 depth_height:=720 depth_fps:=30.0 \
+  enable_sync:=true align_depth:=true
 
 Not working ones:
 ros2 launch realsense2_camera rs_launch.py rgb_camera.color_profile:=1280x720x30 depth_module.depth_profile:=640x480x30

@@ -19,7 +19,7 @@ def generate_launch_description():
         print(f"ROS 2 distribution: {ros_distro}")
         joy_package = "joy_linux"
         joy_node = "joy_linux_node"
-    else if ros_distro:
+    elif ros_distro:
         print("ROS_DISTRO not humble, good to use joy_node")
 
     else:

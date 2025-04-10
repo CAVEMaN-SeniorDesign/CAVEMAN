@@ -8,6 +8,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
+    joy_params = os.path.join(get_package_share_directory('rover'),'config','xbox.yaml')
 
     ros_distro = os.environ.get('ROS_DISTRO')
     joy_package = 'joy'
@@ -17,7 +18,7 @@ def generate_launch_description():
         print(f"ROS 2 distribution: {ros_distro}")
         joy_package = "joy_linux"
         joy_node = "joy_linux_node"
-    else if ros_distro:
+    elif ros_distro:
         print("ROS_DISTRO not humble, good to use joy_node")
 
     else:
